@@ -1,0 +1,41 @@
+Repl interation:
+! (run-test '(name-stack) should do the right thing with setups and
+  teardowns
+  - What is the right thing to do with them?
+  - Test this
+
+Api features
+- (in-test-group '(chain of subgroups) ...) could descend down the
+  whole chain in one swoop
+- (define-deep-set-up ...) could define a setup to be run before each
+  test, no really, test not subgroup.
+
+Emacs interface:
+- run-test-at-point
+  - with the group's setup and teardown
+- run-test-group-at-point
+- run-tests-in-file
+- syntax-highlight define-test
+- rerun-last-test-{suite/group/single test}
+
+Problems:
+- The test-runner system is in *desperate* need of refactoring.
+  - Use SOS?  Portability issues?
+  - Perhaps a function that returns a result object, from which 
+    the results can then be printed?
+  - How much do I care about this extensibility thing?
+
+I am beginning to realise what languages I am trying to create here.
+The current main focus is a language for defining test suites.  It
+consists of assertions, tests, and test groups.  There is an
+interesting collection of thoughts to be thought about implicitness
+and explicitness.  For example, in-test-group arranges an implicit
+change in the "current test group", which affects things like
+define-test and possible define-set-up, define-group-set-up, etc.  In
+contrast, there is also the explict set-tg:group-set-up! and their
+ilk.  The function (current-test-group) functions as a bridge between
+the two worlds.
+
+Language for defining test suites
+Language for defining individual tests
+Language for running tests and getting results
