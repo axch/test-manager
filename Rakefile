@@ -4,10 +4,12 @@ require 'rake'
 
 task :default => :test
 
+desc "Run the full test suite"
 task :test do 
   sh %Q{mit-scheme --batch-mode --load all-tests.scm --eval "(%exit (run-registered-tests))"}
 end
 
+desc "Run a demonstration test suite to show off failure reports"
 task :demo do 
   sh %Q{mit-scheme --batch-mode --load failure-report-demo.scm --eval "(%exit 0)"}
 end

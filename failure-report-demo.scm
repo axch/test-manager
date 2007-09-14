@@ -3,6 +3,8 @@
    (directory-namestring (current-load-pathname))
    (lambda () (load filename))))
 
+(set! load/suppress-loading-message? #t) (newline)
+
 (load-relative "load")
 
 (define-test (this-test-passes)
