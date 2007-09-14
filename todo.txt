@@ -4,7 +4,11 @@ Repl interation:
   - What is the right thing to do with them?
   - Test this
 
+Port to Guile
+
 Api features
+- It should be possible to supply around code for setup and teardown, 
+  in addition to before and after (like CLOS)
 - (in-test-group '(chain of subgroups) ...) could descend down the
   whole chain in one swoop
 - (define-deep-set-up ...) could define a setup to be run before each
@@ -31,7 +35,7 @@ consists of assertions, tests, and test groups.  There is an
 interesting collection of thoughts to be thought about implicitness
 and explicitness.  For example, in-test-group arranges an implicit
 change in the "current test group", which affects things like
-define-test and possible define-set-up, define-group-set-up, etc.  In
+define-test and possibly define-set-up, define-group-set-up, etc.  In
 contrast, there is also the explict set-tg:group-set-up! and their
 ilk.  The function (current-test-group) functions as a bridge between
 the two worlds.
