@@ -47,8 +47,9 @@ This test framework defines a language for specifying test suites and
 a simple set of commands for running them.  A test suite is a
 collection of individual tests grouped into a hierarchy of test
 groups.  The test group hierarchy serves to semantically aggregate the
-tests, allowing the definition of shared code for set up and tear
-down, and also partition the test namespace to avoid collisions.
+tests, allowing the definition of shared code for set up, tear down,
+and surround, and also partition the test namespace to avoid
+collisions.
 
 The individual tests are ordinary procedures, with some associated
 bookkeeping.  A test is considered to pass if it returns normally,
@@ -103,6 +104,13 @@ Defines a sequence of expressions to be run after every test in
 the current test group.  Clobbers any previously defined tear down
 for this group.
 
+=item (define-surround expression ...)
+
+Defines a sequence of expressions to be run surrounding every test in
+the current test group.  Inside the C<define-surround>, the identifier
+C<run-test> is bound to a nullary procedure that actually runs the
+test.  Clobbers any previously defined surround for this group.
+
 =item (define-group-set-up expression ...)
 
 Defines a sequence of expressions to be run once before running any
@@ -114,6 +122,14 @@ set up for this group.
 Defines a sequence of expressions to be run once after running all
 tests in the current test group.  Clobbers any previously defined
 group tear down for this group.
+
+=item (define-group-surround expression ...)
+
+Defines a sequence of expressions to be run once surrounding running
+the tests in the current test group.  Inside the
+C<define-group-surround>, the identifier C<run-test> is bound to a
+nullary procedure that actually runs the tests in this group.
+Clobbers any previously defined group surround for this group.
 
 =back
 

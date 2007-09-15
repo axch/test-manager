@@ -23,22 +23,27 @@
 	   (display ".")))))
 
 (define ((standard-run-test-group result-map) group name-stack)
-  (dynamic-wind
-      (tg:group-set-up group)
-      (lambda ()
-	(omap:for-each
-	 (tg:test-map group)
-	 (lambda (name test)
-	   (dynamic-wind
-	       (tg:set-up group)
-	       (lambda ()
-		 (if (single-test? test)
-		     ((standard-run-one-test result-map)
-		      (cons name name-stack) test)
-		     ((standard-run-test-group result-map)
-		      test (cons name name-stack))))
-	       (tg:tear-down group)))))
-      (tg:group-tear-down group)))
+  (define (run-test-in-context name test)
+    ((tg:surround group)
+     (lambda ()
+       (dynamic-wind
+	   (tg:set-up group)
+	   (lambda ()
+	     (if (single-test? test)
+		 ((standard-run-one-test result-map)
+		  (cons name name-stack) test)
+		 ((standard-run-test-group result-map)
+		  test (cons name name-stack))))
+	   (tg:tear-down group)))))
+  ((tg:group-surround group)
+   (lambda ()
+     (dynamic-wind
+	 (tg:group-set-up group)
+	 (lambda ()
+	   (omap:for-each
+	    (tg:test-map group)
+	    run-test-in-context))
+	 (tg:group-tear-down group)))))
 
 (define ((standard-report-results result-map))
   (newline) ; Finish the run-one-test wallpaper

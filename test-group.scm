@@ -8,8 +8,10 @@
   (test-group (constructor make-test-group (name))
 	      (conc-name tg:))
   (name 'nameless read-only #t)
+  (group-surround (lambda (run-test) (run-test)))
   (group-set-up (lambda () 'done))
   (group-tear-down (lambda () 'done))
+  (surround (lambda (run-test) (run-test)))
   (set-up (lambda () 'done))
   (tear-down (lambda () 'done))
   (test-map (make-ordered-map) read-only #t))
@@ -53,17 +55,31 @@
 	 body-exp ...)
        group))))
 
+(define (*define-group-surround proc)
+  (set-tg:group-surround! (current-test-group) proc))
+
 (define (*define-group-set-up thunk)
   (set-tg:group-set-up! (current-test-group) thunk))
 
 (define (*define-group-tear-down thunk)
   (set-tg:group-tear-down! (current-test-group) thunk))
 
+(define (*define-surround proc)
+  (set-tg:surround! (current-test-group) proc))
+
 (define (*define-set-up thunk)
   (set-tg:set-up! (current-test-group) thunk))
 
 (define (*define-tear-down thunk)
   (set-tg:tear-down! (current-test-group) thunk))
+
+(define-syntax define-group-surround
+  (er-macro-transformer 
+   (lambda (form rename compare)
+     (let ((body (cdr form)))
+       `(,(rename '*define-group-surround)
+	 (,(rename 'lambda) (run-test)
+	  ,@body))))))
 
 (define-syntax define-group-set-up
   (syntax-rules ()
@@ -78,6 +94,14 @@
      (*define-group-tear-down
       (lambda ()
 	body-exp ...)))))
+
+(define-syntax define-surround
+  (er-macro-transformer 
+   (lambda (form rename compare)
+     (let ((body (cdr form)))
+       `(,(rename '*define-surround)
+	 (,(rename 'lambda) (run-test)
+	  ,@body))))))
 
 (define-syntax define-set-up
   (syntax-rules ()

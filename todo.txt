@@ -7,12 +7,13 @@ Repl interation:
 Port to Guile
 
 Api features
-- It should be possible to supply around code for setup and teardown, 
-  in addition to before and after (like CLOS)
 - (in-test-group '(chain of subgroups) ...) could descend down the
   whole chain in one swoop
 - (define-deep-set-up ...) could define a setup to be run before each
   test, no really, test not subgroup.
+- Is it ok to write (run-test foo bar) inside of a surround definition
+  if the tests are all defined to take arguments?  What use can I put
+  this to?
 
 Emacs interface:
 - run-test-at-point
