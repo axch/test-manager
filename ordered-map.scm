@@ -1,13 +1,19 @@
-(define-structure
-  (ordered-map (constructor make-ordered-map ()) (conc-name omap:))
-  (entry-list #f)
-  (entry-table (make-equal-hash-table)))
+(define-record-type ordered-map
+  (%make-ordered-map entry-list entry-table)
+  ordered-map?
+  (entry-list omap:entry-list set-omap:entry-list!)
+  (entry-table omap:entry-table))
 
-(define-structure (omap-entry)
-  (key #f)
-  (item #f)
-  (next #f)
-  (prev #f))
+(define (make-ordered-map)
+  (%make-ordered-map #f (make-equal-hash-table)))
+
+(define-record-type omap-entry
+  (make-omap-entry key item next prev)
+  omap-entry?
+  (key omap-entry-key set-omap-entry-key!)
+  (item omap-entry-item set-omap-entry-item!)
+  (next omap-entry-next set-omap-entry-next!)
+  (prev omap-entry-prev set-omap-entry-prev!))
 
 (define (omap:fetch-entry omap key)
   (hash-table/get (omap:entry-table omap) key #f))

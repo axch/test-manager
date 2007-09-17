@@ -1,20 +1,35 @@
-(define-structure
-  (single-test (constructor make-single-test (name thunk))
-	       (conc-name st:))
-  (name 'nameless read-only #t)
-  (thunk #f read-only #t))
+(define-record-type single-test
+  (make-single-test name thunk)
+  single-test?
+  (name st:name)
+  (thunk st:thunk))
 
-(define-structure 
-  (test-group (constructor make-test-group (name))
-	      (conc-name tg:))
-  (name 'nameless read-only #t)
-  (group-surround (lambda (run-test) (run-test)))
-  (group-set-up (lambda () 'done))
-  (group-tear-down (lambda () 'done))
-  (surround (lambda (run-test) (run-test)))
-  (set-up (lambda () 'done))
-  (tear-down (lambda () 'done))
-  (test-map (make-ordered-map) read-only #t))
+(define-record-type test-group
+  (%make-test-group
+   name
+   group-surround group-set-up group-tear-down
+   surround set-up tear-down
+   test-map)
+  test-group?
+  (name tg:name)
+  (group-surround tg:group-surround set-tg:group-surround!)
+  (group-set-up tg:group-set-up set-tg:group-set-up!)
+  (group-tear-down tg:group-tear-down set-tg:group-tear-down!)
+  (surround tg:surround set-tg:surround!)
+  (set-up tg:set-up set-tg:set-up!)
+  (tear-down tg:tear-down set-tg:tear-down!)
+  (test-map tg:test-map))
+
+(define (make-test-group name)
+  (%make-test-group 
+   name
+   (lambda (run-test) (run-test))
+  (lambda () 'done)
+  (lambda () 'done)
+  (lambda (run-test) (run-test))
+  (lambda () 'done)
+  (lambda () 'done)
+  (make-ordered-map)))
 
 (define (tg:register-test! group test)
   (omap:put! (tg:test-map group) (st:name test) test))
