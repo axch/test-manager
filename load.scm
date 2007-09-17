@@ -23,6 +23,12 @@
      (directory-namestring (current-load-pathname))
      (lambda () (load filename))))))
 
+(cond-expand
+ (guile
+  (load-relative "guile-conditions"))
+ (else ;; What's symbol is MIT Scheme?
+  (load-relative "mitscheme-conditions")))
+
 (load-relative "ordered-map")
 (load-relative "assertions")
 (load-relative "test-runner")

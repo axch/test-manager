@@ -1,15 +1,3 @@
-(define condition-type:test-failure
-  (make-condition-type 'test-failure condition-type:error
-		       '(message) (lambda (condition port)
-				    (display (access-condition condition 'message) port))))
-
-(define condition/test-failure?
-  (condition-predicate condition-type:test-failure))
-
-(define test-fail
-  (condition-signaller condition-type:test-failure
-		       '(message) standard-error-handler))
-
 (define (instantiate-template template arguments)
   (if (not (= (length arguments) (- (length template) 1)))
       (error "Template and argument lists are length-mismatched: "
