@@ -1,9 +1,19 @@
-(define (load-relative filename)
-  (with-working-directory-pathname 
-   (directory-namestring (current-load-pathname))
-   (lambda () (load filename))))
+(cond-expand
+ (guile
+  (define (load-relative filename)
+    (load (string-concatenate (list filename ".scm")))))  ; This is not quite right
+ (else ;; What's MIT Scheme?
+  (define (load-relative filename)
+    (with-working-directory-pathname 
+     (directory-namestring (current-load-pathname))
+     (lambda () (load filename)))))
+ )
 
-(set! load/suppress-loading-message? #t) (newline)
+(cond-expand
+ (guile)
+ (else
+  (set! load/suppress-loading-message? #t) (newline))
+ )
 
 (load-relative "load")
 

@@ -4,14 +4,24 @@
 ;;   the one from SRFIs 34-36).
 ;; - fluid-let
 ;; - hash tables
-;; - define-structure
+
+;; Ask for define-record-type
+(cond-expand
+ (guile
+  (use-modules (srfi srfi-9)))
+ (srfi-9))
 
 ;; This depends on MIT Scheme's pathname system
 ;; TODO Fix for interactive use?
-(define (load-relative filename)
-  (with-working-directory-pathname 
-   (directory-namestring (current-load-pathname))
-   (lambda () (load filename))))
+(cond-expand
+ (guile
+  (define (load-relative filename)
+    (load (string-concatenate (list filename ".scm")))))  ; This is not quite right
+ (else ;; What's symbol is MIT Scheme?
+  (define (load-relative filename)
+    (with-working-directory-pathname 
+     (directory-namestring (current-load-pathname))
+     (lambda () (load filename))))))
 
 (load-relative "ordered-map")
 (load-relative "assertions")
