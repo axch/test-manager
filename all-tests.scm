@@ -2,7 +2,7 @@
  (guile
   (define (load-relative filename)
     (load (string-concatenate (list filename ".scm")))))  ; This is not quite right
- (else ;; What's MIT Scheme?
+ (else ;; What symbol is MIT Scheme?
   (define (load-relative filename)
     (with-working-directory-pathname 
      (directory-namestring (current-load-pathname))
@@ -11,7 +11,7 @@
 
 (cond-expand
  (guile)
- (else
+ (else ;; What symbol is MIT Scheme?
   (set! load/suppress-loading-message? #t) (newline))
  )
 

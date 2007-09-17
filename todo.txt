@@ -5,6 +5,7 @@ Repl interation:
   - Test this
 
 Port to Guile
+- Fix uses of #!optional in the documentation
 
 Api features
 - (in-test-group '(chain of subgroups) ...) could descend down the
