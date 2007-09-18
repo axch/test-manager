@@ -27,7 +27,7 @@ error instead."
     ;; TODO This relies on the arguments following Guile's throwing 
     ;; convention.
     (caddr throw-arguments))
-  (let ((error-object))
+  (let ((error-object #f))
     (catch 
      #t
      thunk
