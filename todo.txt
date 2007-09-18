@@ -5,6 +5,9 @@ Repl interation:
   - Test this
 
 Touch up Guile port
+- Port regexes (assert-matches doesn't work)
+- Fix load-relative so that it actually works
+  (so that clients can load the installed version)
 - Fix uses of #!optional in the documentation
 - Clean cond-expands in load.scm (into functions names, e.g. ensure-hash-tables)
 - Put the guile-side tests into rake test

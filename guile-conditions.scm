@@ -4,10 +4,10 @@
 ;;; I need on top of catch-throw.
 
 (define-record-type condition
-  (make-condition type message continuation)
+  (make-condition type throw-args continuation)
   condition?
   (type condition/type)
-  (message condition/message)
+  (throw-args condition/throw-args)
   (continuation condition/continuation))
 
 (define (condition/test-failure? condition)
@@ -23,14 +23,6 @@
   "Run the given thunk.  If it returns normally, return its return
 value.  If it signals an error, return an object representing that
 error instead."
-  (define (extract-message throw-arguments)
-    ;; TODO This relies on the arguments following Guile's throwing 
-    ;; convention.
-    (let ((message-template (cadr throw-arguments))
-	  (template-parameters (caddr throw-arguments)))
-      (if template-parameters
-	  (apply format #f message-template template-parameters)
-	  message-template)))
   (let ((error-object #f))
     (catch 
      #t
@@ -41,10 +33,15 @@ error instead."
        (call-with-current-continuation
 	(lambda (thrown-at)
 	  (set! error-object
-		(make-condition
-		 key
-		 (extract-message args)
-		 thrown-at))))))))
+		(make-condition key args thrown-at))))))))
 
 (define (write-condition-report condition port)
-  (display (condition/message condition) port))
+  (define (extract-message throw-arguments)
+    ;; TODO This relies on the arguments following Guile's throwing 
+    ;; convention.
+    (let ((message-template (cadr throw-arguments))
+	  (template-parameters (caddr throw-arguments)))
+      (if template-parameters
+	  (apply format #f message-template template-parameters)
+	  message-template)))
+  (display (extract-message (condition/throw-args condition)) port))
