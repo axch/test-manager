@@ -28,8 +28,7 @@ task :guile_demo do
 end
 
 install_path = "/infolab/share/lib/guile-1.8/test-manager"
-desc "Install the current version of this testing manager to #{install_path}"
+desc "Describe how to Install the current version of this testing manager to #{install_path}"
 task :install do
-  sh "release --verbose --maintainer=axch@mit.edu . #{install_path}"
-  sh "touch release-hack; release -w -v release-hack #{install_path}/WARNING; rm release-hack"
+  puts "To install, go to #{install_path} and run 'svn up'"
 end
