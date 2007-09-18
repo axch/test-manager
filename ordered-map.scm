@@ -5,7 +5,7 @@
   (entry-table omap:entry-table))
 
 (define (make-ordered-map)
-  (%make-ordered-map #f (make-equal-hash-table)))
+  (%make-ordered-map #f (make-hash-table)))
 
 (define-record-type omap-entry
   (make-omap-entry key item next prev)
@@ -16,7 +16,7 @@
   (prev omap-entry-prev set-omap-entry-prev!))
 
 (define (omap:fetch-entry omap key)
-  (hash-table/get (omap:entry-table omap) key #f))
+  (hash-table-ref/default (omap:entry-table omap) key #f))
 
 (define (omap:put! omap key datum)
   (let ((entry (omap:fetch-entry omap key)))
@@ -29,7 +29,7 @@
 	 (new-entry (make-omap-entry key datum head #f)))
     (if head (set-omap-entry-prev! head new-entry))
     (set-omap:entry-list! omap new-entry)
-    (hash-table/put! (omap:entry-table omap) key new-entry)))
+    (hash-table-set! (omap:entry-table omap) key new-entry)))
 
 (define (omap:get omap key default)
   (let ((entry (omap:fetch-entry omap key)))
@@ -43,14 +43,14 @@
 	(omap:remove-entry! omap key entry))))
 
 (define (omap:remove-entry! omap key entry)
-  (hash-table/remove! (omap:entry-table omap) key)
+  (hash-table-delete! (omap:entry-table omap) key)
   (let ((old-prev (omap-entry-prev entry))
 	(old-next (omap-entry-next entry)))
     (if old-prev (set-omap-entry-next! old-prev old-next))
     (if old-next (set-omap-entry-prev! old-next old-prev))))
 
 (define (omap:count omap)
-  (hash-table/count (omap:entry-table omap)))
+  (hash-table-size (omap:entry-table omap)))
 
 (define (omap:key-list omap)
   (reverse

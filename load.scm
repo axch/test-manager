@@ -1,7 +1,6 @@
 ;; This depends on:
 ;; - queue.scm from the MIT Scheme runtime
 ;; - fluid-let
-;; - hash tables
 
 ;; define-record-type
 (cond-expand
@@ -57,6 +56,12 @@
 	  expr ...)))
       ))
   ))
+
+;; Hash tables
+(cond-expand
+ (srfi-69)
+ (else ; Do I want to use Guile's hash tables instead?
+  (load-relative "srfi-69-hash-tables")))
 
 ;; Actual code
 (load-relative "ordered-map")
