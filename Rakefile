@@ -4,8 +4,11 @@ require 'rake'
 
 task :default => :test
 
-desc "Run the full test suite"
-task :test do 
+desc "Run the full test suite in MIT Scheme and Guile"
+task :test => [ :mit_scheme_test, :guile_test ]
+
+desc "Run the full test suite in MIT Scheme"
+task :mit_scheme_test do 
   sh %Q{mit-scheme --batch-mode --eval "(set! load/suppress-loading-message? #t)" --load load.scm --load all-tests.scm --eval "(%exit (run-registered-tests))"}
 end
 

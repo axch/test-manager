@@ -7,8 +7,6 @@ Repl interation:
 Touch up Guile port
 - Fix load-relative so that it actually works
   (so that clients can load the installed version)
-- Fix uses of #!optional in the documentation
-- Put the guile-side tests into rake test
 - Push to Infolab use
 
 Api features
@@ -19,6 +17,9 @@ Api features
 - Is it ok to write (run-test foo bar) inside of a surround definition
   if the tests are all defined to take arguments?  What use can I put
   this to?
+- Do the assertions want to be macros that include the actual code
+  of their input expressions in their messages?
+  - Should probably provide the procedural versions anyway, for, say, map
 
 Emacs interface:
 - run-test-at-point

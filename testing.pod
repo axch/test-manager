@@ -2,7 +2,7 @@
 
 =head1 NAME
 
-testing/ - An automatic unit-testing framework for MIT Scheme
+testing/ - An automatic unit-testing framework for MIT Scheme or Guile
 
 =head1 SYNOPSYS
 
@@ -145,15 +145,15 @@ true value.  On failure, arranges for the given message to appear in
 the failure report.  This is a primitive assertion in whose terms
 other assertions are defined.
 
-=item (assert-true thing #!optional message)
+=item (assert-true thing [message])
 
 Passes iff the given value is a true value (to wit, not #f).
 
-=item (assert-false thing #!optional message)
+=item (assert-false thing [message])
 
 Passes iff the given value is a false value (to wit, #f).
 
-=item (assert-equal expected actual #!optional message)
+=item (assert-equal expected actual [message])
  Likewise assert-eqv, assert-eq, and assert-=
 
 Passes iff the given actual value is equivalent, according to the
@@ -167,7 +167,7 @@ use C<assert-in-delta>, below, for inexact numbers like floating points.
 
 Are aliases for assert-equal and assert-=, respectively.
 
-=item (assert-equivalent predicate #!optional pred-name)
+=item (assert-equivalent predicate [pred-name])
 
 This is intended as a tool for building custom assertions.  Returns an
 assertion procedure that compares an expected and an actual value with
@@ -176,11 +176,11 @@ C<assert-equal> and company could have been defined in terms of
 C<assert-equivalent> as, for example, C<(define assert-equal
 (assert-equivalent equal? "equal?"))>.
 
-=item (assert-matches regexp string #!optional message)
+=item (assert-matches regexp string [message])
 
 Passes iff the given regular expression matches the given string.
 
-=item (assert-in-delta expected actual delta #!optional message)
+=item (assert-in-delta expected actual delta [message])
 
 Passes iff the given actual value differs, in absolute value, from the
 given expected value by no more than delta.  Use this in preference
