@@ -3,8 +3,11 @@
 ;; TODO Fix for interactive use?
 (cond-expand
  (guile
-  (define (load-relative filename)
-    (load (string-concatenate (list filename ".scm")))))  ; This is not quite right
+  (if (defined? 'load-relative)
+      'ok
+      (define (load-relative filename)
+	;; Guile's load appears to magically do the right thing...
+	(load (string-concatenate (list filename ".scm"))))))
  (else ;; The MIT Scheme that knows it is 'mit' isn't in Debian Stable yet
   (define (load-relative filename)
     (with-working-directory-pathname 

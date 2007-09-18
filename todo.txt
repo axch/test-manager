@@ -5,8 +5,6 @@ Repl interation:
   - Test this
 
 Touch up Guile port
-- Fix load-relative so that it actually works
-  (so that clients can load the installed version)
 - Push to Infolab use
 
 Api features
