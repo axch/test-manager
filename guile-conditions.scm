@@ -26,7 +26,7 @@ error instead."
   (define (extract-message throw-arguments)
     ;; TODO This relies on the arguments following Guile's throwing 
     ;; convention.
-    (caddr throw-arguments))
+    (cadr throw-arguments))
   (let ((error-object #f))
     (catch 
      #t
@@ -38,6 +38,7 @@ error instead."
 	(lambda (thrown-at)
 	  (set! error-object
 		(make-condition
+		 key
 		 (extract-message args)
 		 thrown-at))))))))
 
