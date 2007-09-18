@@ -64,6 +64,5 @@
   (let loop ((head (omap:entry-list omap)))
     (if head
 	(begin (loop (omap-entry-next head))
-	       (procedure (omap-entry-key head) (omap-entry-item head)))
-	unspecific)))
+	       (procedure (omap-entry-key head) (omap-entry-item head))))))
 
