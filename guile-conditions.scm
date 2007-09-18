@@ -17,7 +17,7 @@
   (not (condition/test-failure? condition)))
 
 (define (test-fail message)
-  (throw 'test-failure "test-fail" message))
+  (throw 'test-failure "test-fail" message #f))
 
 (define (ignore-errors thunk)
   "Run the given thunk.  If it returns normally, return its return
@@ -26,7 +26,11 @@ error instead."
   (define (extract-message throw-arguments)
     ;; TODO This relies on the arguments following Guile's throwing 
     ;; convention.
-    (cadr throw-arguments))
+    (let ((message-template (cadr throw-arguments))
+	  (template-parameters (caddr throw-arguments)))
+      (if template-parameters
+	  (apply format #f message-template template-parameters)
+	  message-template)))
   (let ((error-object #f))
     (catch 
      #t
