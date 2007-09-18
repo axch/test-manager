@@ -2,11 +2,11 @@
 
 =head1 NAME
 
-testing/ - An automatic unit-testing framework for MIT Scheme or Guile
+test-manager/ - An automatic unit-testing framework for MIT Scheme or Guile
 
 =head1 SYNOPSYS
 
-  (load "/infolab/share/lib/testing/load.scm")
+  (load "/infolab/share/lib/guile-1.8/test-manager/load.scm")
 
   (in-test-group
    simple-stuff
