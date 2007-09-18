@@ -6,7 +6,7 @@ test-manager/ - An automatic unit-testing framework for MIT Scheme or Guile
 
 =head1 SYNOPSYS
 
-  (load "/infolab/share/lib/guile-1.8/test-manager/load.scm")
+  (loadlib (filename-join "test-manager" "load"))
 
   (in-test-group
    simple-stuff
