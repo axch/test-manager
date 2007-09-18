@@ -88,13 +88,21 @@
 (define (*define-tear-down thunk)
   (set-tg:tear-down! (current-test-group) thunk))
 
-(define-syntax define-group-surround
-  (er-macro-transformer 
-   (lambda (form rename compare)
-     (let ((body (cdr form)))
-       `(,(rename '*define-group-surround)
-	 (,(rename 'lambda) (run-test)
-	  ,@body))))))
+;;; Portable slightly non-hygienic macros suck...
+(cond-expand
+ (guile ;; TODO less hygienic than it should be...
+  (define-macro (define-group-surround . body)
+    `(*define-group-surround
+      (lambda (run-test)
+	,@body))))
+ (else ;; What is the symbol for MIT Scheme?
+  (define-syntax define-group-surround
+    (er-macro-transformer 
+     (lambda (form rename compare)
+       (let ((body (cdr form)))
+	 `(,(rename '*define-group-surround)
+	   (,(rename 'lambda) (run-test)
+	    ,@body))))))))
 
 (define-syntax define-group-set-up
   (syntax-rules ()
@@ -110,13 +118,21 @@
       (lambda ()
 	body-exp ...)))))
 
-(define-syntax define-surround
-  (er-macro-transformer 
-   (lambda (form rename compare)
-     (let ((body (cdr form)))
-       `(,(rename '*define-surround)
-	 (,(rename 'lambda) (run-test)
-	  ,@body))))))
+;;; Portable slightly non-hygienic macros suck...
+(cond-expand
+ (guile ;; TODO less hygienic than it should be...
+  (define-macro (define-surround . body)
+    `(*define-surround
+      (lambda (run-test)
+	,@body))))
+ (else ;; What is the symbol for MIT Scheme?
+  (define-syntax define-surround
+    (er-macro-transformer 
+     (lambda (form rename compare)
+       (let ((body (cdr form)))
+	 `(,(rename '*define-surround)
+	   (,(rename 'lambda) (run-test)
+	    ,@body))))))))
 
 (define-syntax define-set-up
   (syntax-rules ()

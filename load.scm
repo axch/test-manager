@@ -63,6 +63,12 @@
  (else ; Do I want to use Guile's hash tables instead?
   (load-relative "srfi-69-hash-tables")))
 
+;; Macros
+(cond-expand
+ (guile
+  (use-modules (ice-9 syncase)))
+ (else))
+
 ;; Actual code
 (load-relative "ordered-map")
 (load-relative "assertions")
