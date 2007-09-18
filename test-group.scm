@@ -95,7 +95,7 @@
     `(*define-group-surround
       (lambda (run-test)
 	,@body))))
- (else ;; What is the symbol for MIT Scheme?
+ (else ;; The MIT Scheme that knows it is 'mit' isn't in Debian Stable yet
   (define-syntax define-group-surround
     (er-macro-transformer 
      (lambda (form rename compare)
@@ -125,7 +125,7 @@
     `(*define-surround
       (lambda (run-test)
 	,@body))))
- (else ;; What is the symbol for MIT Scheme?
+ (else ;; The MIT Scheme that knows it is 'mit' isn't in Debian Stable yet
   (define-syntax define-surround
     (er-macro-transformer 
      (lambda (form rename compare)

@@ -1,7 +1,3 @@
-;; This depends on:
-;; - queue.scm from the MIT Scheme runtime
-;; - fluid-let
-
 ;; define-record-type
 (cond-expand
  (guile
@@ -15,7 +11,7 @@
  (guile
   (define (load-relative filename)
     (load (string-concatenate (list filename ".scm")))))  ; This is not quite right
- (else ;; What symbol is MIT Scheme?
+ (else ;; The MIT Scheme that knows it is 'mit' isn't in Debian Stable yet
   (define (load-relative filename)
     (with-working-directory-pathname 
      (directory-namestring (current-load-pathname))
@@ -25,14 +21,14 @@
 (cond-expand
  (guile
   (load-relative "guile-conditions"))
- (else ;; What symbol is MIT Scheme?
+ (else ;; The MIT Scheme that knows it is 'mit' isn't in Debian Stable yet
   (load-relative "mitscheme-conditions")))
 
 ;; Optional arguments
 (cond-expand
  (guile
   (use-modules (ice-9 optargs)))
- (else ;; What symbol is MIT Scheme?
+ (else ;; The MIT Scheme that knows it is 'mit' isn't in Debian Stable yet
   (define-syntax let-optional
     (syntax-rules ()
       ((_ arg-list () expr ...)

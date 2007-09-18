@@ -4,8 +4,11 @@ Repl interation:
   - What is the right thing to do with them?
   - Test this
 
-Port to Guile
+Touch up Guile port
 - Fix uses of #!optional in the documentation
+- Clean cond-expands in load.scm (into functions names, e.g. ensure-hash-tables)
+- Put the guile-side tests into rake test
+- Push to Infolab use
 
 Api features
 - (in-test-group '(chain of subgroups) ...) could descend down the

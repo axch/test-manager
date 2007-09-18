@@ -2,18 +2,16 @@
  (guile
   (define (load-relative filename)
     (load (string-concatenate (list filename ".scm")))))  ; This is not quite right
- (else ;; What symbol is MIT Scheme?
+ (else ;; The MIT Scheme that knows it is 'mit' isn't in Debian Stable yet
   (define (load-relative filename)
     (with-working-directory-pathname 
      (directory-namestring (current-load-pathname))
-     (lambda () (load filename)))))
- )
+     (lambda () (load filename))))))
 
 (cond-expand
  (guile)
- (else ;; What symbol is MIT Scheme?
-  (set! load/suppress-loading-message? #t) (newline))
- )
+ (else ;; The MIT Scheme that knows it is 'mit' isn't in Debian Stable yet
+  (set! load/suppress-loading-message? #t) (newline)))
 
 (load-relative "load")
 
