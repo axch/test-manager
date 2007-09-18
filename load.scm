@@ -69,6 +69,28 @@
   (use-modules (ice-9 syncase)))
  (else))
 
+;; Fluid-let (in the MIT Scheme sense of the word 'fluid'.
+(cond-expand
+ (guile
+  (define-syntax fluid-let
+    (syntax-rules ()
+      ((_ () expr ...)
+       (begin expr ...))
+      ((_ ((variable1 value1) binding ...) expr ...)
+       (let ((out-value variable1)
+	     (in-value value1))
+	 (dynamic-wind
+	     (lambda ()
+	       (set! out-value variable1)
+	       (set! variable1 in-value))
+	     (lambda ()
+	       (fluid-let (binding ...)
+		 expr ...))
+	     (lambda ()
+	       (set! in-value variable1)
+	       (set! variable1 out-value))))))))
+ (else))
+
 ;; Actual code
 (load-relative "ordered-map")
 (load-relative "assertions")
