@@ -6,22 +6,22 @@ task :default => :test
 
 desc "Run the full test suite"
 task :test do 
-  sh %Q{mit-scheme --batch-mode --load all-tests.scm --eval "(%exit (run-registered-tests))"}
+  sh %Q{mit-scheme --batch-mode --eval "(set! load/suppress-loading-message? #t)" --load load.scm --load all-tests.scm --eval "(%exit (run-registered-tests))"}
 end
 
 desc "Run the full test suite in Guile"
 task :guile_test do
-  sh %Q{guile -l all-tests.scm -c "(exit (run-registered-tests))"}
+  sh %Q{guile -l load.scm -l all-tests.scm -c "(exit (run-registered-tests))"}
 end
 
 desc "Run a demonstration test suite to show off failure reports"
 task :demo do 
-  sh %Q{mit-scheme --batch-mode --load failure-report-demo.scm --eval "(%exit 0)"}
+  sh %Q{mit-scheme --batch-mode --eval "(set! load/suppress-loading-message? #t)" --load load.scm --load failure-report-demo.scm --eval "(%exit 0)"}
 end
 
 desc "Run a demonstration test suite to show off failure reports in Guile"
 task :guile_demo do 
-  sh %Q{guile -l failure-report-demo.scm -c "(exit 0)"}
+  sh %Q{guile -l load.scm -l failure-report-demo.scm -c "(exit 0)"}
 end
 
 desc "Install the current version of this testing manager to /infolab/share/lib/testing"
