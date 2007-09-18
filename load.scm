@@ -87,6 +87,13 @@
 	       (set! variable1 out-value))))))))
  (else))
 
+;; Regexes (using MIT Scheme's name for no good reason)
+(cond-expand
+ (guile
+  (use-modules (ice-9 regex))
+  (define re-string-search-forward string-match))
+ (else))
+
 ;; Actual code
 (load-relative "ordered-map")
 (load-relative "assertions")
