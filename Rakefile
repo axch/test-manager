@@ -19,6 +19,11 @@ task :demo do
   sh %Q{mit-scheme --batch-mode --load failure-report-demo.scm --eval "(%exit 0)"}
 end
 
+desc "Run a demonstration test suite to show off failure reports in Guile"
+task :guile_demo do 
+  sh %Q{guile -l failure-report-demo.scm -c "(exit 0)"}
+end
+
 desc "Install the current version of this testing manager to /infolab/share/lib/testing"
 task :install do
   sh "release --verbose --maintainer=axch@mit.edu . /infolab/share/lib/testing"
