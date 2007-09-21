@@ -1,9 +1,3 @@
-Repl interation:
-! (run-test '(name-stack) should do the right thing with setups and
-  teardowns
-  - What is the right thing to do with them?
-  - Test this
-
 Touch up Guile port
 - Push to Infolab use
 
@@ -18,6 +12,9 @@ Api features
 - Do the assertions want to be macros that include the actual code
   of their input expressions in their messages?
   - Should probably provide the procedural versions anyway, for, say, map
+- Do I want to offer some find of (let-fixtures (binding ...)
+  test-definition ...) facility (that would allow mutation of the fixtures
+  internally, but restore them at every test)?
 
 Emacs interface:
 - run-test-at-point
