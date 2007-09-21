@@ -54,6 +54,27 @@
 	(else
 	 (omap:get (tg:test-map group) name #f))))
 
+(define (tg:in-group-context group thunk)
+  "Runs the given thunk in the whole-group context of the given test
+group (see also tg:in-test-context)."
+  ((tg:group-surround group)
+   (lambda ()
+     (dynamic-wind
+	 (tg:group-set-up group)
+	 thunk
+	 (tg:group-tear-down group)))))
+
+(define (tg:in-test-context group thunk)
+  "Runs the given thunk in the single-test context of the given test
+group.  Does not create the whole-group context provided by
+tg:in-group-context."
+  ((tg:surround group)
+   (lambda ()
+     (dynamic-wind
+	 (tg:set-up group)
+	 thunk
+	 (tg:tear-down group)))))
+
 (define *current-test-group* (make-test-group 'top-level))
 
 (define (current-test-group) *current-test-group*)

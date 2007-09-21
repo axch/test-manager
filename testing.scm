@@ -20,19 +20,35 @@
 (define (run-given-group test-runner group name-stack)
   ((tr:run-group test-runner) group name-stack))
 
+(define (run-given-test-or-group test-runner test name-stack)
+  (cond ((test-group? test)
+	 (run-given-group test-runner test name-stack))
+	((single-test? test)
+	 (run-given-test test-runner test))
+	(else
+	 (error "Unknown test type" test))))
+
 (define (report-results test-runner)
   ((tr:report-results test-runner)))
 
 (define (run-test test-name-stack . opt-test-runner)
   (let-optional opt-test-runner ((test-runner (make-standard-test-runner)))
-   (let ((test (tg:get (current-test-group) test-name-stack)))
-     (cond ((test-group? test)
-	    (run-given-group test-runner test '()))
-	   ((single-test? test)
-	    (run-given-test test-runner test))
+   (let loop ((test (current-test-group))
+	      (stack-left test-name-stack)
+	      (stack-traversed '()))
+     (cond ((null? stack-left)
+	    (run-given-test-or-group test-runner test (reverse stack-traversed)))
+	   ((test-group? test)
+	    (tg:in-group-context test
+	     (lambda ()
+	       (tg:in-test-context test
+		(lambda ()
+		  (loop (tg:get test (car stack-left))
+			(cdr stack-left)
+			(cons (car stack-left) stack-traversed)))))))
 	   (else
-	    (error "Unknown test type" test)))
-     (report-results test-runner))))
+	    (error "Name stack did not lead to a valid test" test-name-stack))))
+   (report-results test-runner)))
 
 (define (run-registered-tests . opt-test-runner)
   (apply run-test (cons '() opt-test-runner)))

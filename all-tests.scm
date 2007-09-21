@@ -137,3 +137,34 @@
    (define-test (check-enter-this-thunk-runs)
      (assert-eq #t entered-group))))
 
+(define (run-test-capturing-output name-stack)
+  (with-output-to-string
+    (lambda ()
+      (run-test name-stack))))
+
+(define-test (test-explicit-run)
+  (let ((count1 0)
+	(count2 0)
+	(mock-test-group (make-test-group 'mockery)))
+    (with-top-level-group
+     mock-test-group
+     (lambda ()
+       (in-test-group 
+	sub1
+	(in-test-group
+	 sub2
+	 (define-test (test1)
+	   (set! count1 (+ count1 1)))
+	 (define-test (test2)
+	   (set! count2 (+ count2 1)))))
+       (assert-= 0 count1)
+       (assert-= 0 count2)
+       (run-test-capturing-output '(sub1 sub2 test1))
+       (assert-= 1 count1)
+       (assert-= 0 count2)
+       (run-test-capturing-output '(sub1 sub2))
+       (assert-= 2 count1)
+       (assert-= 1 count2)
+       (run-test-capturing-output '(sub1 sub2 test2))
+       (assert-= 2 count1)
+       (assert-= 2 count2)))))
