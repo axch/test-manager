@@ -3,12 +3,21 @@
 (define (register-test test)
   (tg:register-test! *current-test-group* test))
 
+;; TODO Unit test this, and port it to Guile
+(define (generate-test-name)
+  (generate-uninterned-symbol 'anonymous-test))
+
 ;; TODO Teach Emacs to syntax-highlight this just like define
 (define-syntax define-test
   (syntax-rules ()
-    ((define-test (name formal ...) body-exp ...)
-     (let ((proc (lambda (formal ...) body-exp ...)))
-       (register-test (make-single-test 'name proc))))))
+    ((define-test (name formal ...) body-exp1 body-exp2 ...)
+     (let ((proc (lambda (formal ...) body-exp1 body-exp2 ...)))
+       (register-test (make-single-test 'name proc))))
+    ((define-test () body-exp1 body-exp2 ...)
+     (let ((proc (lambda () body-exp1 body-exp2 ...)))
+       (register-test (make-single-test (generate-test-name) proc))))
+    ((define-test form)
+     (define-test () form))))
 
 ;;;; Test Running
 
