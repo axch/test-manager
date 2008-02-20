@@ -32,3 +32,12 @@ desc "Describe how to Install the current version of this testing manager to #{i
 task :install do
   puts "To install, go to #{install_path} and run 'svn up'"
 end
+
+desc "Generate html documentation"
+task :doc do
+  sh "cd #{File.dirname(__FILE__)}/doc/; cat testing.pod | pod2html > testing.html"
+end
+
+task :clean do
+  sh "cd #{File.dirname(__FILE__)}; find . -name '*~' | xargs rm -f; find . -name 'actions.log' | xargs rm -f; find . -name 'pod2htm*.tmp' | xargs rm -f; "
+end
