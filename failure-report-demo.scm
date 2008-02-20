@@ -31,4 +31,7 @@
 (define-test (this-test-errors)
   (assert-eqv 4 (+ 2 (/ 2 0)) "Don't divide by zero."))
 
+(define-test
+  (error "Anonymous tests can fail too"))
+
 (run-registered-tests)

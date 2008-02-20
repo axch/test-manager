@@ -3,9 +3,12 @@
 (define (register-test test)
   (tg:register-test! *current-test-group* test))
 
-;; TODO Unit test this, and port it to Guile
+(define *anonymous-test-count* 0)
+
 (define (generate-test-name)
-  (generate-uninterned-symbol 'anonymous-test))
+  (set! *anonymous-test-count* (+ *anonymous-test-count* 1))
+  (string->symbol
+   (string-append "anonymous-test-" (number->string *anonymous-test-count*))))
 
 ;; TODO Teach Emacs to syntax-highlight this just like define
 (define-syntax define-test

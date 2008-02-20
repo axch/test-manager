@@ -218,3 +218,13 @@
        (run-test-capturing-output '(sub1 sub2 test2))
        (assert-= 2 count1)
        (assert-= 2 count2)))))
+
+(define-test (test-anonymous-syntax)
+  (let ((mock-test-group (make-test-group 'mockery)))
+    (with-top-level-group
+     mock-test-group
+     (lambda ()
+       (define-test ()
+	 (this is an anonymous test))
+       (define-test (so is this))))
+    (assert-equal 2 (omap:count (tg:test-map mock-test-group)))))
