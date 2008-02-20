@@ -6,7 +6,7 @@ test-manager/ - An automatic unit-testing framework for MIT Scheme or Guile
 
 =head1 SYNOPSYS
 
-  (loadlib (filename-join "test-manager" "load"))
+  (load "test-manager/load.scm")
 
   (in-test-group
    simple-stuff
@@ -17,6 +17,8 @@ test-manager/ - An automatic unit-testing framework for MIT Scheme or Guile
      (assert-= 2147483648 (+ 2147483647 1) "Addition shouldn't overflow."))
    (define-test (cons)
      (assert-equal '(1 2 3) (cons 1 '(2 3)))))
+
+  (run-registered-tests)
 
 =head1 DESCRIPTION
 
@@ -54,8 +56,19 @@ expressions will be executed in order, just like the body of any
 procedure.  If the test raises any condition that it does not handle,
 it is considered to have failed.  If it returns normally, it is
 considered to have passed.  Usually, tests will contain assertions
-from L<assertions.scm>, which raise appropriate conditions when they
+from the list below, which raise appropriate conditions when they
 fail.
+
+=item (define-test () expression ... )
+
+Define an explicitly anonymous test.  I can't see why you would want
+to do this, but it is provided for completeness.
+
+=item (define-test expression)
+
+Define a one-expression anonymous test.  If you have many independent
+assertions you need to make and you don't want to invent names for
+each individual one, this is the test definition syntax for you.
 
 =item (in-test-group name expression ... )
 
@@ -122,7 +135,9 @@ Looks up the test indicated by name-stack in the current test group,
 runs it, and prints a report of the results.  Returns the number of
 tests that did not pass.  An empty list for a name stack indicates the
 whole group, a singleton list indicates that immediate descendant, a
-two-element list indicates a descendant of a descentant, etc.
+two-element list indicates a descendant of a descendant, etc.  For
+example, C<(run-test '(simple-stuff harder))> would run the second
+test defined in the example at the top of this page.
 
 =item (run-registered-tests)
 
@@ -141,27 +156,32 @@ The following assertions are provided for writing tests:
 =item (assert-proc message proc)
 
 Passes iff the given procedure, invoked with no arguments, returns a
-true value.  On failure, arranges for the given message to appear in
+true value.  On failure, arranges for the given C<message> to appear in
 the failure report.  This is a primitive assertion in whose terms
 other assertions are defined.
 
 =item (assert-true thing [message])
 
-Passes iff the given value is a true value (to wit, not #f).
+Passes iff the given value is a true value (to wit, not #f).  The
+optional C<message> argument is included in the failure report if the
+assertion fails.
 
 =item (assert-false thing [message])
 
-Passes iff the given value is a false value (to wit, #f).
+Passes iff the given value is a false value (to wit, #f).  The
+optional C<message> argument is included in the failure report if the
+assertion fails.
 
 =item (assert-equal expected actual [message])
  Likewise assert-eqv, assert-eq, and assert-=
 
-Passes iff the given actual value is equivalent, according to the
-corresponding predicate, to the expected value.  Produces a reasonably
-helpful message on failure, and includes the optional message argument
-in it if present.  When in doubt, use C<assert-equal> to compare most
-things; use C<assert-=> to compare exact numbers like integers; and
-use C<assert-in-delta>, below, for inexact numbers like floating points.
+Passes iff the given C<actual> value is equivalent, according to the
+corresponding predicate, to the C<expected> value.  Produces a
+reasonably helpful message on failure, and includes the optional
+C<message> argument in it if present.  When in doubt, use
+C<assert-equal> to compare most things; use C<assert-=> to compare
+exact numbers like integers; and use C<assert-in-delta>, below, for
+inexact numbers like floating points.
 
 =item assert-equals, assert=
 
@@ -178,13 +198,17 @@ C<assert-equivalent> as, for example, C<(define assert-equal
 
 =item (assert-matches regexp string [message])
 
-Passes iff the given regular expression matches the given string.
+Passes iff the given regular expression matches the given string.  The
+optional C<message> argument is included in the failure report if the
+assertion fails.
 
 =item (assert-in-delta expected actual delta [message])
 
-Passes iff the given actual value differs, in absolute value, from the
-given expected value by no more than delta.  Use this in preference
-to C<assert-=> to check sameness of inexact numerical values.
+Passes iff the given C<actual> value differs, in absolute value, from
+the given C<expected> value by no more than C<delta>.  Use this in
+preference to C<assert-=> to check sameness of inexact numerical
+values.  The optional C<message> argument is included in the failure
+report if the assertion fails.
 
 =back
 
