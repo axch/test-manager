@@ -27,12 +27,6 @@ task :guile_demo do
   sh %Q{guile -l load.scm -l failure-report-demo.scm -c "(exit 0)"}
 end
 
-install_path = "/infolab/share/lib/guile-1.8/test-manager"
-desc "Describe how to Install the current version of this testing manager to #{install_path}"
-task :install do
-  puts "To install, go to #{install_path} and run 'svn up'"
-end
-
 desc "Generate html documentation"
 task :doc do
   sh "cd #{File.dirname(__FILE__)}/doc/; cat testing.pod | pod2html > testing.html"
@@ -40,4 +34,8 @@ end
 
 task :clean do
   sh "cd #{File.dirname(__FILE__)}; find . -name '*~' | xargs rm -f; find . -name 'actions.log' | xargs rm -f; find . -name 'pod2htm*.tmp' | xargs rm -f; "
+end
+
+task :release => [:doc, :clean] do
+  sh "cd #{File.dirname(__FILE__)}; " + %Q{tar --create --verbose --file ../test-manager-1.0.tar --directory .. --exclude="*.svn*" --exclude=.commitmail test-manager/}
 end
