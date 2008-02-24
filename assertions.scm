@@ -17,6 +17,11 @@
 ;;; along with Test Manager.  If not, see <http://www.gnu.org/licenses/>.
 ;;; ----------------------------------------------------------------------
 
+(define (ensure-forced object)
+  (if (promise? object)
+      (force object)
+      object))
+
 (define (instantiate-template template arguments)
   (if (not (= (length arguments) (- (length template) 1)))
       (error "Template and argument lists are length-mismatched: "
@@ -34,15 +39,16 @@
   (with-output-to-string (lambda () (display object))))
 
 (define (build-message header template . arguments)
-  (let ((body (instantiate-template template (map messagify arguments))))
-    (if header
-	(string-append header "\n" body)
-	(string-append "\n" body))))
+  (delay 
+    (let ((body (instantiate-template template (map messagify arguments))))
+      (if header
+	  (string-append (ensure-forced header) "\n" body)
+	  (string-append "\n" body)))))
 
 (define (assert-proc message proc)
   (if (proc)
       'ok
-      (test-fail message)))
+      (test-fail (ensure-forced message))))
 
 (define (assert-equivalent predicate . opt-pred-name)
   (define (full-message message expected actual)
