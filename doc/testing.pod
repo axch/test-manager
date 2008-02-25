@@ -69,14 +69,16 @@ the root of the test group hierarchy.
 
 =item (define-test (name) expression ... )
 
-Define a test named C<name> that consists of the given expressions, and
-add it to the current test group.  When the test is run, the
+Define a test named C<name> that consists of the given expressions,
+and add it to the current test group.  When the test is run, the
 expressions will be executed in order, just like the body of any
 procedure.  If the test raises any condition that it does not handle,
 it is considered to have failed.  If it returns normally, it is
 considered to have passed.  Usually, tests will contain assertions
 from the list below, which raise appropriate conditions when they
-fail.
+fail.  In the spirit of Lisp docstrings, if the first expression in
+the test body is a literal string, that string will be included in the
+failure report if the test should fail.
 
 =item (define-test () expression ... )
 
@@ -85,9 +87,11 @@ to do this, but it is provided for completeness.
 
 =item (define-test expression)
 
-Define a one-expression anonymous test.  If you have many independent
-assertions you need to make and you don't want to invent names for
-each individual one, this is the test definition syntax for you.
+Define a one-expression anonymous test.  The single expression will be
+printed in the failure report if the test fails.  If you have many
+independent assertions you need to make and you don't want to invent
+names for each individual one, this is the test definition syntax for
+you.
 
 =item (in-test-group name expression ... )
 
@@ -177,7 +181,9 @@ extensive direct use.  The message is optional for the other
 assertions because they can say something at least mildly informative
 even without a user-supplied message.  In any case, the message can be
 either a string or a promise (as created by C<delay>) to produce a
-string.
+string.  The latter is useful for assertions with dynamically computed
+messages, because that computation will then only be performed if the
+test actually fails.
 
 =over 
 
