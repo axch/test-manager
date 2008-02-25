@@ -29,17 +29,26 @@
   (string->symbol
    (string-append "anonymous-test-" (number->string *anonymous-test-count*))))
 
+(define (detect-docstring structure)
+  (if (string? structure)
+      structure
+      #f))
+
 ;; TODO Teach Emacs to syntax-highlight this just like define
 (define-syntax define-test
   (syntax-rules ()
     ((define-test (name formal ...) body-exp1 body-exp2 ...)
      (let ((proc (lambda (formal ...) body-exp1 body-exp2 ...)))
-       (register-test (make-single-test 'name proc))))
+       (register-test
+	(make-single-test 'name proc (detect-docstring (quote body-exp1))))))
     ((define-test () body-exp1 body-exp2 ...)
      (let ((proc (lambda () body-exp1 body-exp2 ...)))
-       (register-test (make-single-test (generate-test-name) proc))))
+       (register-test
+	(make-single-test (generate-test-name) proc (detect-docstring (quote body-exp1))))))
     ((define-test form)
-     (define-test () form))))
+     (let ((proc (lambda () form)))
+       (register-test
+	(make-single-test (generate-test-name) proc (quote form)))))))
 
 ;;;; Test Running
 

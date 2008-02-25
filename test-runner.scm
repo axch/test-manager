@@ -72,6 +72,15 @@
       (newline)
       (display (reverse test-name-stack))
       (display ": ")
+      (newline)
+      ;; TODO Oh, what a mess!
+      (let ((test (tg:get (current-test-group) (reverse test-name-stack))))
+	(if test
+	    (let ((docstring (st:docstring test)))
+	      (if docstring
+		  (if (string? docstring)
+		      (begin (display docstring) (newline))
+		      (pp docstring))))))
       (write-condition-report condition (current-output-port))
       (newline)
       (newline))

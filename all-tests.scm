@@ -247,3 +247,28 @@
 	 (this is an anonymous test))
        (define-test (so is this))))
     (assert-equal 2 (omap:count (tg:test-map mock-test-group)))))
+
+(define-test (test-docstrings)
+  (with-top-level-group
+   (make-test-group 'mockery)
+   (lambda ()
+     (define-test (foo)
+       "This is the foo docstring"
+       (assert-true #t))
+     (define-test (bar)
+       "This is the bar docstring"
+       (assert-true #f))
+     (define-test (assert-false #f))
+     (define-test (assert-false #t))
+     (assert-matches
+      "This is the bar docstring"
+      (run-test-capturing-output '(bar)))
+     (assert-no-match
+      "This is the foo docstring"
+      (run-test-capturing-output '(foo)))
+     (assert-matches
+      "(assert-false #t)"
+      (run-test-capturing-output '()))
+     (assert-no-match
+      "(assert-false #f)"
+      (run-test-capturing-output '())))))

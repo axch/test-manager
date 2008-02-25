@@ -18,10 +18,11 @@
 ;;; ----------------------------------------------------------------------
 
 (define-record-type single-test
-  (make-single-test name thunk)
+  (make-single-test name thunk docstring)
   single-test?
   (name st:name)
-  (thunk st:thunk))
+  (thunk st:thunk)
+  (docstring st:docstring))
 
 (define-record-type test-group
   (%make-test-group
