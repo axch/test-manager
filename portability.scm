@@ -98,4 +98,5 @@
  (guile
   (use-modules (ice-9 regex))
   (define re-string-search-forward string-match))
- (else))
+ (else
+  (load-option 'regular-expression)))
