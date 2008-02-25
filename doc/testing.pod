@@ -168,7 +168,16 @@ defined as C<(run-test '())>.
 
 =head2 Assertions
 
-The following assertions are provided for writing tests:
+The following assertions are provided for writing tests.  The
+C<message> arguments to the assertions are user-specified messages to
+print to the output if the given assertion fails.  The C<assert-proc>
+assertion requires a message argument because it cannot construct a
+useful output without one, and because it is not really meant for
+extensive direct use.  The message is optional for the other
+assertions because they can say something at least mildly informative
+even without a user-supplied message.  In any case, the message can be
+either a string or a promise (as created by C<delay>) to produce a
+string.
 
 =over 
 
@@ -181,15 +190,11 @@ other assertions are defined.
 
 =item (assert-true thing [message])
 
-Passes iff the given value is a true value (to wit, not #f).  The
-optional C<message> argument is included in the failure report if the
-assertion fails.
+Passes iff the given value is a true value (to wit, not #f).
 
 =item (assert-false thing [message])
 
-Passes iff the given value is a false value (to wit, #f).  The
-optional C<message> argument is included in the failure report if the
-assertion fails.
+Passes iff the given value is a false value (to wit, #f).
 
 =item (assert-equal expected actual [message])
  Likewise assert-eqv, assert-eq, and assert-=
@@ -217,17 +222,19 @@ C<assert-equivalent> as, for example, C<(define assert-equal
 
 =item (assert-matches regexp string [message])
 
-Passes iff the given regular expression matches the given string.  The
-optional C<message> argument is included in the failure report if the
-assertion fails.
+Passes iff the given regular expression matches the given string.
+
+=item (assert-matches regexp string [message])
+
+Passes iff the given regular expression does not match the given
+string.
 
 =item (assert-in-delta expected actual delta [message])
 
 Passes iff the given C<actual> value differs, in absolute value, from
 the given C<expected> value by no more than C<delta>.  Use this in
 preference to C<assert-=> to check sameness of inexact numerical
-values.  The optional C<message> argument is included in the failure
-report if the assertion fails.
+values.
 
 =back
 

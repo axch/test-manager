@@ -95,7 +95,7 @@
 (define (assert-no-match regexp string . opt-message)
   (let-optional opt-message ((message #f))
    (let ((full-message
-	  (build-message message '("<" "> expected to match <" ">")
+	  (build-message message '("<" "> expected not to match <" ">")
 			 string regexp)))
      (assert-proc full-message
 		  (lambda ()
