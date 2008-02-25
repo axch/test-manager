@@ -100,3 +100,10 @@
   (define re-string-search-forward string-match))
  (else
   (load-option 'regular-expression)))
+
+;; Pretty printing
+(cond-expand
+ (guile
+  ;; TODO Does Guile have pretty printing?
+  (define (pp thing) (display thing) (newline)))
+ (else))
