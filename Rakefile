@@ -56,5 +56,5 @@ task :clean do
 end
 
 task :release => [:doc, :clean] do
-  sh "cd #{File.dirname(__FILE__)}; " + %Q{tar --create --verbose --file ../test-manager-1.0.tar --directory .. --exclude="*.svn*" --exclude=.commitmail --exclude=todo.txt test-manager/}
+  sh "cd #{File.dirname(__FILE__)}; " + %Q{tar --create --verbose --file ../test-manager-1.1.tar --directory .. --exclude="*.svn*" --exclude=.commitmail --exclude=todo.txt test-manager/}
 end
