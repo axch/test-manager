@@ -247,7 +247,7 @@ C<assert-equivalent> as, for example, C<(define assert-equal
 
 Passes iff the given regular expression matches the given string.
 
-=item (assert-matches regexp string [message])
+=item (assert-no-match regexp string [message])
 
 Passes iff the given regular expression does not match the given
 string.
