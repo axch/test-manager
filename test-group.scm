@@ -44,12 +44,15 @@
   (%make-test-group 
    name
    (lambda (run-test) (run-test))
-  (lambda () 'done)
-  (lambda () 'done)
-  (lambda (run-test) (run-test))
-  (lambda () 'done)
-  (lambda () 'done)
-  (make-ordered-map)))
+   (lambda () 'done)
+   (lambda () 'done)
+   (lambda (run-test) (run-test))
+   (lambda () 'done)
+   (lambda () 'done)
+   (make-ordered-map)))
+
+(define (tg:size group)
+  (omap:count (tg:test-map group)))
 
 (define (tg:register-test! group test)
   (omap:put! (tg:test-map group) (st:name test) test))

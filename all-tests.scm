@@ -24,7 +24,7 @@
      (lambda ()
        (define-test (foo)
 	 foo!)))
-    (assert-= 1 (omap:count (tg:test-map mock-test-group)))
+    (assert-= 1 (tg:size mock-test-group))
     (assert-true (single-test? (tg:get mock-test-group '(foo))))))
 
 (define-test (test-structure)
@@ -40,7 +40,7 @@
 	subgroup-2
 	(define-test (some-other-name) baz!)
 	(define-test (repeated-name) quux!))))
-    (assert-= 2 (omap:count (tg:test-map mock-test-group)))
+    (assert-= 2 (tg:size mock-test-group))
     (assert-true (test-group? (tg:get mock-test-group '(subgroup-1))))
     (assert-true (test-group? (tg:get mock-test-group '(subgroup-2))))
     (let ((fetched-tests
@@ -246,7 +246,7 @@
        (define-test ()
 	 (this is an anonymous test))
        (define-test (so is this))))
-    (assert-equal 2 (omap:count (tg:test-map mock-test-group)))))
+    (assert-equal 2 (tg:size mock-test-group))))
 
 (define-test (test-docstrings)
   (with-top-level-group
