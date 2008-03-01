@@ -17,17 +17,17 @@ You should have received a copy of the GNU General Public License
 along with Test Manager.  If not, see <http://www.gnu.org/licenses/>.
 ----------------------------------------------------------------------
 
-Touch up Guile port
-- Push to Infolab use
-
 Api features
+- Is it ok to write (run-test foo bar) inside of a surround definition
+  if the tests are all defined to take arguments?  What use can I put
+  this to?
+  - I could use this for manually simulating something like quickcheck
+  - Implement by making the actual run-test take any set of args, and
+    applying the internal procedure.
 - (in-test-group '(chain of subgroups) ...) could descend down the
   whole chain in one swoop
 - (define-deep-set-up ...) could define a setup to be run before each
   test, no really, test not subgroup.
-- Is it ok to write (run-test foo bar) inside of a surround definition
-  if the tests are all defined to take arguments?  What use can I put
-  this to?
 - Do the assertions want to be macros that include the actual code
   of their input expressions in their messages?
   - Should probably provide the procedural versions anyway, for, say, map
@@ -42,6 +42,7 @@ Emacs interface:
 - run-tests-in-file
 - syntax-highlight define-test
 - rerun-last-test-{suite/group/single test}
+- run-last-defined-{test/suite/group} ?
 
 Problems:
 - The test-runner system is in *desperate* need of refactoring.

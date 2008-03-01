@@ -248,6 +248,18 @@
        (define-test (so is this))))
     (assert-equal 2 (tg:size mock-test-group))))
 
+(define-test (test-many-anonymous-syntax)
+  (let ((mock-test-group (make-test-group 'mockery)))
+    (with-top-level-group
+     mock-test-group
+     (lambda ()
+       (define-each-test)
+       (define-each-test 
+	 (foo)
+	 (bar)
+	 (baz))))
+    (assert-equal 3 (tg:size mock-test-group))))
+
 (define-test (test-docstrings)
   (with-top-level-group
    (make-test-group 'mockery)

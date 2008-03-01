@@ -29,13 +29,18 @@ test-manager/ - An automatic unit-testing framework for MIT Scheme or Guile
 
   (in-test-group
    simple-stuff
-   (define-test (easy)
+   (define-test (arithmetic)
+     "Checking that set! and arithmetic work"
+     (define foo 5)
+     (assert-= 5 foo "Foo should start as five.")
+     (set! foo 6)
+     (assert-= 36 (* foo foo)))
+   ; Each of these will become a separate anonymous one-form test
+   (define-each-test
      (assert-= 4 (+ 2 2) "Two and two should make four.")
-     (assert-= 6 (+ 2 2 2)))
-   (define-test (harder)
-     (assert-= 2147483648 (+ 2147483647 1) "Addition shouldn't overflow."))
-   (define-test (cons)
-     (assert-equal '(1 2 3) (cons 1 '(2 3)))))
+     (assert-= 6 (+ 2 2 2))
+     (assert-= 2147483648 (+ 2147483647 1) "Addition shouldn't overflow.")
+     (assert-equal '(1 2 3) (cons 1 '(2 3))))
 
   (run-registered-tests)
 
@@ -80,6 +85,10 @@ fail.  In the spirit of Lisp docstrings, if the first expression in
 the test body is a literal string, that string will be included in the
 failure report if the test should fail.
 
+This is the most verbose and most expressive test definition syntax.
+The three test definition syntaxes provided below are increasingly
+terse syntactic sugar for common usage patterns of this syntax.
+
 =item (define-test () expression ... )
 
 Define an explicitly anonymous test.  I can't see why you would want
@@ -88,10 +97,18 @@ to do this, but it is provided for completeness.
 =item (define-test expression)
 
 Define a one-expression anonymous test.  The single expression will be
-printed in the failure report if the test fails.  If you have many
-independent assertions you need to make and you don't want to invent
-names for each individual one, this is the test definition syntax for
-you.
+printed in the failure report if the test fails.  This is a special
+case of C<define-each-test>, below.
+
+=item (define-each-test expression ... )
+
+Define a one-expression anonymous test for each of the given
+expressions.  If any of the tests fail, the corresponding expression
+will be printed in that test's failure report.
+
+If you have many simple independent assertions you need to make and
+you don't want to invent names for each individual one, this is the
+test definition syntax for you.
 
 =item (in-test-group name expression ... )
 

@@ -49,6 +49,11 @@
      (let ((proc (lambda () form)))
        (register-test
 	(make-single-test (generate-test-name) proc (quote form)))))))
+
+(define-syntax define-each-test
+  (syntax-rules ()
+    ((define-each-test form ...)
+     (begin (define-test form) ...))))
 
 ;;;; Test Running
 
