@@ -1,0 +1,11 @@
+From 1.0 to 1.1:
+
+- You can now use promises (made by delay) as assertion failure
+  messages.  If the message is a promise, the framework will only
+  force it if the assertion fails.
+- Added assert-no-match to complement assert-matches.
+- Tests now understand docstrings, meaning they print them if the test
+  fails.  Single-form tests use the test form itself as the docstring.
+- Added define-each-test to make single-form tests out of each of its
+  argument expressions.  This is a convenience over writing
+  (define-test (assert-foo ... )) over and over.
