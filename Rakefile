@@ -51,10 +51,12 @@ task :doc do
   sh "cd #{File.dirname(__FILE__)}/doc/; cat testing.pod | pod2html > testing.html"
 end
 
+desc "Delete random temporary files that arise as one works"
 task :clean do
   sh "cd #{File.dirname(__FILE__)}; find . -name '*~' | xargs rm -f; find . -name 'actions.log' | xargs rm -f; find . -name 'pod2htm*.tmp' | xargs rm -f; "
 end
 
+desc "Prepare a release tarball"
 task :release => [:doc, :clean] do
   sh "cd #{File.dirname(__FILE__)}; " + %Q{tar --create --verbose --file ../test-manager-1.1.tar --directory .. --exclude="*.svn*" --exclude=.commitmail --exclude=todo.txt test-manager/}
 end
