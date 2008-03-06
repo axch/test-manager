@@ -57,6 +57,9 @@
 (define (tg:register-test! group test)
   (omap:put! (tg:test-map group) (st:name test) test))
 
+(define (tg:clear! group)
+  (omap:clear! (tg:test-map group)))
+
 (define (tg:find-or-make-subgroup group name)
   (let ((subgroup (omap:get (tg:test-map group) name #f)))
     (cond ((not subgroup)

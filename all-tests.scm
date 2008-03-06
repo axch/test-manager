@@ -284,3 +284,29 @@
      (assert-no-match
       "(assert-false #f)"
       (run-test-capturing-output '())))))
+
+(define-test (test-definition-clearing)
+  (let ((mock-group (make-test-group 'mockery)))
+    (with-top-level-group
+     mock-group
+     (lambda ()
+       (define-test (foo) quux)
+       (define-test (bar) baz)
+       (define-test (ninja) monkey)))
+    (assert= 3 (tg:size mock-group))
+    (assert-true (single-test? (tg:get mock-group '(foo))))
+    (assert-true (single-test? (tg:get mock-group '(bar))))
+    (assert-true (single-test? (tg:get mock-group '(ninja))))
+    (omap:remove! (tg:test-map mock-group) 'foo)
+    (assert= 2 (tg:size mock-group))
+    (assert-false (tg:get mock-group '(foo)))
+    (assert-true (single-test? (tg:get mock-group '(bar))))
+    (assert-true (single-test? (tg:get mock-group '(ninja))))
+    (with-top-level-group
+     mock-group
+     (lambda ()
+       (clear-registered-tests!)))
+    (assert= 0 (tg:size mock-group))
+    (assert-false (tg:get mock-group '(foo)))
+    (assert-false (tg:get mock-group '(bar)))
+    (assert-false (tg:get mock-group '(ninja)))))

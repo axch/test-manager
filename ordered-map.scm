@@ -71,6 +71,10 @@
 (define (omap:count omap)
   (hash-table-size (omap:entry-table omap)))
 
+(define (omap:clear! omap)
+  (hash-table/clear! (omap:entry-table omap))
+  (set-omap:entry-list! omap #f))
+
 (define (omap:key-list omap)
   (reverse
    (let loop ((head (omap:entry-list omap)))

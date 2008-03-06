@@ -97,3 +97,6 @@
 
 (define (run-registered-tests . opt-test-runner)
   (apply run-test (cons '() opt-test-runner)))
+
+(define (clear-registered-tests!)
+  (tg:clear! (current-test-group)))
