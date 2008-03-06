@@ -40,7 +40,7 @@ test-manager/ - An automatic unit-testing framework for MIT Scheme or Guile
      (assert-= 4 (+ 2 2) "Two and two should make four.")
      (assert-= 6 (+ 2 2 2))
      (assert-= 2147483648 (+ 2147483647 1) "Addition shouldn't overflow.")
-     (assert-equal '(1 2 3) (cons 1 '(2 3))))
+     (assert-equal '(1 2 3) (cons 1 '(2 3)))))
 
   (run-registered-tests)
 
