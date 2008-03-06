@@ -21,7 +21,7 @@
   (%make-ordered-map entry-list entry-table)
   ordered-map?
   (entry-list omap:entry-list set-omap:entry-list!)
-  (entry-table omap:entry-table))
+  (entry-table omap:entry-table set-omap:entry-table!))
 
 (define (make-ordered-map)
   (%make-ordered-map #f (make-hash-table)))
@@ -72,7 +72,7 @@
   (hash-table-size (omap:entry-table omap)))
 
 (define (omap:clear! omap)
-  (hash-table/clear! (omap:entry-table omap))
+  (set-omap:entry-table! omap (make-hash-table))
   (set-omap:entry-list! omap #f))
 
 (define (omap:key-list omap)
