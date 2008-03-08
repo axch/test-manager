@@ -310,3 +310,13 @@
     (assert-false (tg:get mock-group '(foo)))
     (assert-false (tg:get mock-group '(bar)))
     (assert-false (tg:get mock-group '(ninja)))))
+
+(define-test (test-assert-generation)
+  (with-top-level-group
+   (make-test-group 'mockery)
+   (lambda ()
+     (define-test (foo)
+       (assert-equal 2 3))
+     (assert-matches
+      "<2> expected to be equal\\? to\n<3>"
+      (run-test-capturing-output '(foo))))))
