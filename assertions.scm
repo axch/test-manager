@@ -42,13 +42,13 @@
   (delay 
     (let ((body (instantiate-template template (map messagify arguments))))
       (if header
-	  (string-append (ensure-forced header) "\n" body)
+	  (string-append (messagify (ensure-forced header)) "\n" body)
 	  (string-append "\n" body)))))
 
 (define (assert-proc message proc)
   (if (proc)
       'ok
-      (test-fail (ensure-forced message))))
+      (test-fail (messagify (ensure-forced message)))))
 
 (define (assert-equivalent predicate . opt-pred-name)
   (define (full-message message expected actual)

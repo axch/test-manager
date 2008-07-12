@@ -320,3 +320,24 @@
      (assert-matches
       "<2> expected to be equal\\? to\n<3>"
       (run-test-capturing-output '(foo))))))
+
+(define-test (test-delayed-computation)
+  (with-top-level-group
+   (make-test-group 'mockery)
+   (lambda ()
+     (define-test (passing-does-not-trigger-delays)
+       (assert-equal 2 2 (delay (pp "Should not happen"))))
+     (define-test (failing-does-trigger-delays)
+       (assert-equal 2 3 (delay (pp "Should happen"))))
+     (assert-matches
+      "1 tests, 0 failures, 0 errors"
+      (run-test-capturing-output '(passing-does-not-trigger-delays)))
+     (assert-no-match
+      "happen"
+      (run-test-capturing-output '(passing-does-not-trigger-delays)))
+     (assert-matches
+      "happen"
+      (run-test-capturing-output '(failing-does-trigger-delays)))
+     (assert-matches
+      "1 tests, 1 failures, 0 errors"
+      (run-test-capturing-output '(failing-does-trigger-delays))))))

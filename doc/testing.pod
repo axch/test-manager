@@ -139,7 +139,10 @@ for this group.
 Defines a sequence of expressions to be run surrounding every test in
 the current test group.  Inside the C<define-surround>, the identifier
 C<run-test> is bound to a nullary procedure that actually runs the
-test.  Clobbers any previously defined surround for this group.
+test.  The test will get run as many times as you call C<run-test>, so
+you can run each test under several conditions (or accidentally not
+run it at all if you for to call C<run-test>).  Clobbers any
+previously defined surround for this group.
 
 =item (define-group-set-up expression ...)
 
@@ -197,10 +200,12 @@ useful output without one, and because it is not really meant for
 extensive direct use.  The message is optional for the other
 assertions because they can say something at least mildly informative
 even without a user-supplied message.  In any case, the message can be
-either a string or a promise (as created by C<delay>) to produce a
-string.  The latter is useful for assertions with dynamically computed
-messages, because that computation will then only be performed if the
-test actually fails.
+either a string, or an arbitrary object that will be coerced to a
+string by C<display>, or a promise (as created by C<delay>), which
+will be forced and the result coerced to a string.  The latter is
+useful for assertions with dynamically computed messages, because that
+computation will then only be performed if the test actually fails,
+and in general for doing some computation at assertion failure time.
 
 =over 
 
