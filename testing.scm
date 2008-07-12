@@ -76,6 +76,10 @@
 (define (report-results test-runner)
   ((tr:report-results test-runner)))
 
+;; Allows access to old test results if needed and keeps failure
+;; continuations from getting garbage collected.
+(define *last-test-runner* #f)
+
 (define (run-test test-name-stack . opt-test-runner)
   (let-optional opt-test-runner ((test-runner (make-standard-test-runner)))
    (let loop ((test (current-test-group))
@@ -93,6 +97,7 @@
 			(cons (car stack-left) stack-traversed)))))))
 	   (else
 	    (error "Name stack did not lead to a valid test" test-name-stack))))
+   (set! *last-test-runner* test-runner)
    (report-results test-runner)))
 
 (define (run-registered-tests . opt-test-runner)
