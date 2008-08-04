@@ -34,6 +34,9 @@ Api features
 - Do I want to offer some find of (let-fixtures (binding ...)
   test-definition ...) facility (that would allow mutation of the fixtures
   internally, but restore them at every test)?
+- A way to mark that certain tests or assertions are expected to fail?
+  Perhaps with keyword arguments to the appropriate functions?  Grem
+  sent email titled "expected failure features for test-manager"
 
 Emacs interface:
 - run-test-at-point
