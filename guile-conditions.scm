@@ -38,7 +38,7 @@
 (define (test-fail message)
   (throw 'test-failure "test-fail" message #f))
 
-(define (ignore-errors thunk)
+(define (capture-unhandled-errors thunk)
   "Run the given thunk.  If it returns normally, return its return
 value.  If it signals an error, return an object representing that
 error instead."

@@ -34,3 +34,24 @@
 (define test-fail
   (condition-signaller condition-type:test-failure
 		       '(message) standard-error-handler))
+
+;;; Gaah!  The signaling of a condition in a flexible language like
+;;; Scheme does not, unlike the raising of an exception in Java,
+;;; entail that the code signaling the condition failed.  In fact, it
+;;; is quite possible that the condition will be handled by some
+;;; toplevel condition handler in a manner that will cause the
+;;; underlying code to continue, and eventually produce a normal
+;;; return.  For example, Mechanics allows vectors to be applied by
+;;; just such a mechanism.  The unit test framework must,
+;;; consequently, try its best to allow such shenanigans to succeed,
+;;; without disrupting the operation of the test framework itself.
+;;; Hence the ugliness below.
+;;; TODO Port this crap to Guile
+(define (capture-unhandled-errors thunk)
+  (if standard-error-hook
+      ;; Fix this for the test-within-a-test case.
+      (warn "If the standard error hook is already bound, I can't be sure which errors are unhandled."))
+  (call-with-current-continuation
+   (lambda (k)
+     (fluid-let ((standard-error-hook k))
+       (thunk)))))

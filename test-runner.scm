@@ -28,7 +28,7 @@
 ;; *test-result-map*.  Is there a way to get around this nastiness and
 ;; preserve a reasonable api for these functions?
 (define ((standard-run-one-test result-map) test-name-stack test)
-  (let ((test-result (ignore-errors (st:thunk test))))
+  (let ((test-result (capture-unhandled-errors (st:thunk test))))
     (cond
      ((and (condition? test-result)
 	   (condition/test-failure? test-result))
