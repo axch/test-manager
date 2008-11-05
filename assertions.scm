@@ -88,8 +88,7 @@
 			 string regexp)))
      (assert-proc full-message
 		  (lambda ()
-		    ;; TODO Fix this
-		    (re-string-search-forward regexp string))))))
+		    (generic-match regexp string))))))
 
 ;; TODO how repetitive!
 (define (assert-no-match regexp string . opt-message)
@@ -99,8 +98,7 @@
 			 string regexp)))
      (assert-proc full-message
 		  (lambda ()
-		    ;; TODO Fix this
-		    (not (re-string-search-forward regexp string)))))))
+		    (not (generic-match regexp string)))))))
 
 (define (assert-true thing . opt-message)
   (let-optional opt-message ((message #f))

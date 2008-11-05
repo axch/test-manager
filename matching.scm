@@ -17,26 +17,13 @@
 ;;; along with Test Manager.  If not, see <http://www.gnu.org/licenses/>.
 ;;; ----------------------------------------------------------------------
 
-;; load-relative, broken in Guile, depends on MIT Scheme's pathname
-;; system.
-;; TODO Fix for interactive use?
+;; Sigh, different object systems
+;; TODO Document user-extensibility of assert-match
+;; TODO Make assert-match user extensible in guile
 (cond-expand
  (guile
-  (if (defined? 'load-relative)
-      'ok
-      (define (load-relative filename)
-	;; Guile's load appears to magically do the right thing...
-	(load (string-concatenate (list filename ".scm"))))))
- (else ;; The MIT Scheme that knows it is 'mit' isn't in Debian Stable yet
-  (define (load-relative filename)
-    (with-working-directory-pathname 
-     (directory-namestring (current-load-pathname))
-     (lambda () (load filename))))))
-
-(load-relative "portability")
-(load-relative "ordered-map")
-(load-relative "matching")
-(load-relative "assertions")
-(load-relative "test-runner")
-(load-relative "test-group")
-(load-relative "testing")
+  (define generic-match re-string-search-forward))
+ (else
+  (define-generic generic-match (pattern object))
+  (define-method generic-match ((pattern <string>) (object <string>))
+    (re-string-search-forward pattern object))))

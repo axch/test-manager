@@ -107,3 +107,10 @@
   ;; TODO Does Guile have pretty printing?
   (define (pp thing) (display thing) (newline)))
  (else))
+
+;; Object system
+(cond-expand
+ (guile
+  'ok)
+ (else
+  (load-option 'sos)))
