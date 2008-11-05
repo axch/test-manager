@@ -25,5 +25,7 @@
   (define generic-match re-string-search-forward))
  (else
   (define-generic generic-match (pattern object))
+  (define-method generic-match (pattern object)
+    (equal? pattern object))
   (define-method generic-match ((pattern <string>) (object <string>))
     (re-string-search-forward pattern object))))
