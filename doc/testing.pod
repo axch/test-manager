@@ -248,6 +248,11 @@ C<assert-equal> and company could have been defined in terms of
 C<assert-equivalent> as, for example, C<(define assert-equal
 (assert-equivalent equal? "equal?"))>.
 
+=item assert-< assert-> assert-<= assert->=
+
+Like assert-=, but with a different comparator.  In particular, these
+aren't equivalence relations, so the order of arguments matters.
+
 =item (assert-matches regexp string [message])
 
 Passes iff the given regular expression matches the given string.

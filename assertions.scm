@@ -72,6 +72,10 @@
 (define assert-= (assert-equivalent = "="))
 (define assert-equals assert-equal)
 (define assert= assert-=)
+(define assert-< (assert-equivalent < "<"))
+(define assert-> (assert-equivalent > ">"))
+(define assert-<= (assert-equivalent <= "<="))
+(define assert->= (assert-equivalent >= ">="))
 
 (define (assert-in-delta expected actual delta . opt-message)
   (let-optional opt-message ((message #f))
