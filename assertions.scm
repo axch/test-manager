@@ -146,9 +146,14 @@
 		(cons fresh-name names)
 		(cdr assertion-left))))))
 
-(define (better-message names quoted-form message)
+(define (better-message values quoted-form message)
   (build-message
    message
    '("Form      : " "\nArg values: " "\n")
    quoted-form
-   (cdr names)))  ; cdr avoids the value of the operator
+   (cdr values)))  ; cdr avoids the value of the operator
+
+(define-syntax check-all
+  (syntax-rules ()
+    ((check-all form ...)
+     (begin (check form) ...))))

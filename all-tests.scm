@@ -358,3 +358,29 @@
      (assert-matches
       "(7 8)"
       (run-test-capturing-output '(arguments-for-check))))))
+
+(define-test (test-define-each-check)
+  (with-top-level-group
+   (make-test-group 'mockery)
+   (lambda ()
+     (in-test-group subgroup
+      (define-each-check
+	(even? (* 2 3))
+	(odd? (* 4 3))
+	(even? (+ 6 1))
+	(odd? (+ 8 1))))
+     (assert-matches
+      "4 tests, 2 failures, 0 errors"
+      (run-test-capturing-output '(subgroup)))
+     (check (string-search-forward
+	     "(odd? (* 4 3))"
+	     (run-test-capturing-output '(subgroup))))
+     (assert-matches
+      "(12)"
+      (run-test-capturing-output '(subgroup)))
+     (check (string-search-forward
+	     "(even? (+ 6 1))"
+	     (run-test-capturing-output '(subgroup))))
+     (assert-matches
+      "(7)"
+      (run-test-capturing-output '(subgroup))))))

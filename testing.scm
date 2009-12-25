@@ -54,6 +54,11 @@
   (syntax-rules ()
     ((define-each-test form ...)
      (begin (define-test form) ...))))
+
+(define-syntax define-each-check
+  (syntax-rules ()
+    ((define-each-check form ...)
+     (define-each-test (check form) ...))))
 
 ;;;; Test Running
 
