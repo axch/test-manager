@@ -117,3 +117,38 @@
 	  (build-message message '("<" "> expected to be a false value.")
 			 thing)))
      (assert-proc full-message (lambda () (not thing))))))
+
+(define-syntax check
+  (sc-macro-transformer
+   (lambda (form env)
+     (let ((assertion (cadr form))
+	   (message (if (null? (cddr form)) "" (caddr form))))
+       (if (list? assertion) 
+	   (compute-check-form assertion message env)
+	   `(assert-true ,(close-syntax assertion env)
+			 ,(close-syntax message env)))))))
+
+(define (compute-check-form assertion message env)
+  (define (wrap form)
+    (close-syntax form env))
+  (let loop ((bindings '())
+	     (names '())
+	     (assertion-left assertion))
+    (if (null? assertion-left)
+	`(let ,bindings
+	   (assert-proc
+	    (better-message
+	     (list ,@(reverse names)) ',assertion ,message)
+	    (lambda () ,(reverse names))))
+	(let ((fresh-name (generate-uninterned-symbol)))
+	  (loop (cons (list fresh-name (wrap (car assertion-left)))
+		      bindings)
+		(cons fresh-name names)
+		(cdr assertion-left))))))
+
+(define (better-message names quoted-form message)
+  (build-message
+   message
+   '("Form      : " "\nArg values: " "\n")
+   quoted-form
+   (cdr names)))  ; cdr avoids the value of the operator

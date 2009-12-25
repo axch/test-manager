@@ -341,3 +341,20 @@
      (assert-matches
       "1 tests, 1 failures, 0 errors"
       (run-test-capturing-output '(failing-does-trigger-delays))))))
+
+(define-test (test-check-captures-info)
+  (with-top-level-group
+   (make-test-group 'mockery)
+   (lambda ()
+     (let ((foo 7) (bar 8))
+       (define-test (arguments-for-check)
+	 (check (> foo bar))))
+     (assert-matches
+      "1 tests, 1 failures, 0 errors"
+      (run-test-capturing-output '(arguments-for-check)))
+     (assert-matches
+      "(> foo bar)"
+      (run-test-capturing-output '(arguments-for-check)))
+     (assert-matches
+      "(7 8)"
+      (run-test-capturing-output '(arguments-for-check))))))

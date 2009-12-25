@@ -53,4 +53,10 @@
 (define-test
   (error "Anonymous tests can fail too"))
 
+(define-test (check-smoke)
+  (check (< (+ 2 5) (* 3 2)) "There is a check macro that tries to DWIM."))
+
+(define-test (check-error)
+  (check (error "Errors can happen in checks.")))
+
 (run-registered-tests)
