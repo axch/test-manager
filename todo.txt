@@ -17,6 +17,66 @@ You should have received a copy of the GNU General Public License
 along with Test Manager.  If not, see <http://www.gnu.org/licenses/>.
 ----------------------------------------------------------------------
 
+I want to be able to write tests that look like repl sessions (there's
+an example lying around somewhere).
+
+I envision a check macro that tests the truth of a predicate and
+captures the values of its arguments, thus:
+(check (foo? bar baz) [message])
+turns into
+(let ((x foo?) (y bar) (z baz))
+  (assert-true (x y z) (better-message '(foo? bar baz) x y z message)))
+(the idea being that the better-message function can tell us what the
+expression was, and what all the values were) (construction of the better
+message can be delayed until the assertion fails)
+
+Then I can also get my hands on a check-all macro that just spews
+(check ...) around every argument form
+- and a (define-each-check form ...) that does (define-test (check form)) ...
+
+Then I can also add a general-purpose pattern matcher, or normal form
+converter, or something (incl good handling of records)
+
+----------------------------------------------------------------------
+
+assert-match or so should be more effective than it is
+(incl good handling of records)
+
+check-* instead of assert-*?
+- A fail function that always fails (but emits its message, yes)
+- Should be a (check form) macro that looks into its argument properly
+  and generates the right error messages
+- Should be a (check-all form ...) macro that turns into (check form) ...
+  (instead of define-each-test)
+
+with-check-info macro (and function) adds extra information
+to the failure display
+
+Example failure display in SchemeUnit
+--------------------
+A test
+... has a FAILURE
+name:       check-pred
+location:   (#<path:/Users/noel/programming/schematics/schemeunit/branches/v3/doc/file-test.scm> 14 6 252 22)
+expression: (check-pred even? elt)
+params:     (#<procedure:even?> 9)
+--------------------
+
+SchemeUnit has check-*, test-begin, test-case, test-suite
+test-begin will abort the rest of the test if any internal check fails
+test-case is a named version of a test-begin (apparently)
+a test-suite delays test execution
+
+"Checks look like functions, even though they are implemented as macros"
+Check information has lexical scope
+
+define-check, define-simple-check, define-binary-check macros
+define-check is like define-simple-check, except that it fails
+only if the fail-check macro is called inside, whereas define-simple-check
+fails if the interior evaluates to #f.
+
+----------------------------------------------------------------------
+
 Api features
 - Is it ok to write (run-test foo bar) inside of a surround definition
   if the tests are all defined to take arguments?  What use can I put
