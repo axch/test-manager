@@ -40,4 +40,11 @@
 (load-relative "test-runner")
 (load-relative "test-group")
 (load-relative "testing")
-(load-relative "interactions")
+
+;; MIT Scheme specific features
+(cond-expand
+ (guile
+  'ok)
+ (else
+  (load-relative "checks")
+  (load-relative "interactions")))
