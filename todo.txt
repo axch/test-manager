@@ -17,8 +17,6 @@ You should have received a copy of the GNU General Public License
 along with Test Manager.  If not, see <http://www.gnu.org/licenses/>.
 ----------------------------------------------------------------------
 
-Resuccitate the Guile port.
-
 Add a general-purpose pattern matcher, or normal form converter, or
 something (incl good handling of records) for use with check.
 - A fail function that always fails (but emits its message, yes)
@@ -65,6 +63,8 @@ Emacs interface:
 - syntax-highlight define-test
 - rerun-last-test-{suite/group/single test}
 - run-last-defined-{test/suite/group} ?
+
+Bring the Guile port up to feature parity?
 
 Problems:
 - The test-runner system is in *desperate* need of refactoring.
