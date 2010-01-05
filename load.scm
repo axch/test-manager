@@ -40,3 +40,4 @@
 (load-relative "test-runner")
 (load-relative "test-group")
 (load-relative "testing")
+(load-relative "interactions")

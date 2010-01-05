@@ -384,3 +384,9 @@
      (assert-matches
       "(7)"
       (run-test-capturing-output '(subgroup))))))
+
+(define-test (interactions)
+  (interaction
+   (define foo 5)
+   (+ foo 2)
+   (produces 7)))

@@ -17,8 +17,7 @@ You should have received a copy of the GNU General Public License
 along with Test Manager.  If not, see <http://www.gnu.org/licenses/>.
 ----------------------------------------------------------------------
 
-I want to be able to write tests that look like repl sessions (there's
-an example lying around somewhere).
+Resuccitate the Guile port.
 
 Add a general-purpose pattern matcher, or normal form converter, or
 something (incl good handling of records) for use with check.
