@@ -21,18 +21,7 @@ Add a general-purpose pattern matcher, or normal form converter, or
 something (incl good handling of records) for use with check.
 - A fail function that always fails (but emits its message, yes)
 
-with-test-info macro (and function) adds extra information
-to the failure display
-
-Example failure display in SchemeUnit
---------------------
-A test
-... has a FAILURE
-name:       check-pred
-location:   (#<path:/Users/noel/programming/schematics/schemeunit/branches/v3/doc/file-test.scm> 14 6 252 22)
-expression: (check-pred even? elt)
-params:     (#<procedure:even?> 9)
---------------------
+Clone quickcheck?
 
 Api features
 - Is it ok to write (run-test foo bar) inside of a surround definition
@@ -54,6 +43,17 @@ Api features
 - A way to mark that certain tests or assertions are expected to fail?
   Perhaps with keyword arguments to the appropriate functions?  Grem
   sent email titled "expected failure features for test-manager"
+- with-test-info macro (and function) adds extra information
+  to the failure display
+    Example failure display in SchemeUnit
+    --------------------
+    A test
+    ... has a FAILURE
+    name:       check-pred
+    location:   (#<path:/Users/noel/programming/schematics/schemeunit/branches/v3/doc/file-test.scm> 14 6 252 22)
+    expression: (check-pred even? elt)
+    params:     (#<procedure:even?> 9)
+    --------------------
 
 Emacs interface:
 - run-test-at-point
