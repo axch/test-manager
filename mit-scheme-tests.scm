@@ -64,4 +64,6 @@
   (interaction
    (define foo 5)
    (+ foo 2)
-   (produces 7)))
+   (produces 7)
+   ((if (even? 4) * +) 3 5)
+   (produces 15)))

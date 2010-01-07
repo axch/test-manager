@@ -47,6 +47,7 @@
 
 (define (apparent-definition? form)
   (and (pair? form)
+       (symbol? (car form))
        (string-search-forward "define" (symbol->string (car form)))))
 
 (define (make-interaction-history)
