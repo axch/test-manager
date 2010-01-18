@@ -37,7 +37,7 @@
 	`(let ,bindings
 	   (assert-proc
 	    (better-message
-	     (list ,@(reverse names)) ',assertion ,message)
+	     (list ,@(reverse names)) ',assertion ,(wrap message))
 	    (lambda () ,(reverse names))))
 	(let ((fresh-name (generate-uninterned-symbol)))
 	  (loop (cons (list fresh-name (wrap (car assertion-left)))
