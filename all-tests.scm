@@ -385,6 +385,14 @@
       "(7)"
       (run-test-capturing-output '(subgroup))))))
 
+(define-test (interactions)
+  (interaction
+   (define foo 5)
+   (+ foo 2)
+   (produces 7)
+   ((if (even? 4) * +) 3 5)
+   (produces 15)))
+
 ;; MIT Scheme specific features
 (cond-expand
  (guile

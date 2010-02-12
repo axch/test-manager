@@ -126,7 +126,9 @@
 (cond-expand
  (guile
   (define (generate-uninterned-symbol)
-    (make-symbol "symbol")))
+    (make-symbol "symbol"))
+  (define (make-synthetic-identifier prefix) 
+    (make-symbol (symbol->string prefix))))
  (else
   'ok))
 
@@ -136,5 +138,14 @@
  (guile
   (define (close-syntax form env)
     form))
+ (else
+  'ok))
+
+;; Faking out the repl history.  (produces foo) will not work at the
+;; Guile repl.
+(cond-expand
+ (guile
+  (define (out)
+    #f))
  (else
   'ok))

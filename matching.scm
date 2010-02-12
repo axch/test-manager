@@ -22,7 +22,12 @@
 ;; TODO Make assert-match user extensible in guile
 (cond-expand
  (guile
-  (define generic-match re-string-search-forward))
+  (define (generic-match pattern object)
+    (cond ((and (string? pattern)
+		(string? object))
+	   (re-string-search-forward pattern object))
+	  (else
+	   (equal? pattern object)))))
  (else
   (define-generic generic-match (pattern object))
   (define-method generic-match (pattern object)

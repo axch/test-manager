@@ -30,20 +30,28 @@
 ;;; will retain the same effect.  This relies on fluid-rebinding
 ;;; the (out) procedure provided by MIT Scheme.
 
-(define-syntax interaction
-  (sc-macro-transformer
-   (lambda (form use-env)
-     (define (close form)
-       (close-syntax form use-env))
-     (let ((history-name (make-synthetic-identifier 'history)))
-       (define (attach-history-tracking subform)
-	 (if (apparent-definition? subform)
-	     subform
-	     `(record-interaction ,subform ,history-name)))
-       `(let ((,history-name (make-interaction-history)))
-	  (fluid-let ((out (read-interaction ,history-name)))
-	    ,@(map attach-history-tracking (cdr form))
-	    (cadr ,history-name)))))))
+(cond-expand
+ (guile
+  (define-macro (interaction . subforms)
+    (compute-interaction-form subforms)))
+ (else
+  (define-syntax interaction
+    (sc-macro-transformer
+     (lambda (form use-env)
+       (compute-interaction-form (cdr form)))))))
+
+(define (compute-interaction-form subforms)
+  (let ((history-name (make-synthetic-identifier 'history)))
+    `(let ((,history-name (make-interaction-history)))
+       (fluid-let ((out (read-interaction ,history-name)))
+	 ,@(map (attach-history-tracking history-name) subforms)
+	 (cadr ,history-name)))))
+
+(define (attach-history-tracking history-name)
+  (lambda (subform)
+    (if (apparent-definition? subform)
+	subform
+	`(record-interaction ,subform ,history-name))))
 
 (define (apparent-definition? form)
   (and (pair? form)
@@ -57,10 +65,9 @@
   (set-cdr! history (cons thing (cdr history))))
 
 (define (read-interaction history)
-  (lambda (#!optional index)
-    (if (default-object? index)
-	(set! index 1))
-    (list-ref (cdr history) (- index 1))))
+  (lambda args
+    (let-optional args ((index 1))
+      (list-ref (cdr history) (- index 1)))))
 
 (define (produces pattern)
   (check (generic-match pattern (out))))
