@@ -101,6 +101,13 @@
  (else
   (load-option 'regular-expression)))
 
+(cond-expand
+ (guile
+  (define (string-search-forward pattern string)
+    (string-contains string pattern)))
+ (else
+  'ok))
+
 ;; Pretty printing
 (cond-expand
  (guile
@@ -114,3 +121,20 @@
   'ok)
  (else
   (load-option 'sos)))
+
+;; Symbols
+(cond-expand
+ (guile
+  (define (generate-uninterned-symbol)
+    (make-symbol "symbol")))
+ (else
+  'ok))
+
+;; Hackery to make syntactic-closures macro code work (with less
+;; hygiene!) in Guile's defmacro system.
+(cond-expand
+ (guile
+  (define (close-syntax form env)
+    form))
+ (else
+  'ok))

@@ -17,15 +17,22 @@
 ;;; along with Test Manager.  If not, see <http://www.gnu.org/licenses/>.
 ;;; ----------------------------------------------------------------------
 
-(define-syntax check
-  (sc-macro-transformer
-   (lambda (form env)
-     (let ((assertion (cadr form))
-	   (message (if (null? (cddr form)) "" (caddr form))))
-       (if (list? assertion) 
-	   (compute-check-form assertion message env)
-	   `(assert-true ,(close-syntax assertion env)
-			 ,(close-syntax message env)))))))
+(cond-expand
+ (guile
+  (define-macro (check assertion)
+    (if (list? assertion)
+	(compute-check-form assertion "" #f)
+	`(assert-true assertion))))
+ (else
+  (define-syntax check
+    (sc-macro-transformer
+     (lambda (form env)
+       (let ((assertion (cadr form))
+	     (message (if (null? (cddr form)) "" (caddr form))))
+	 (if (list? assertion) 
+	     (compute-check-form assertion message env)
+	     `(assert-true ,(close-syntax assertion env)
+			   ,(close-syntax message env)))))))))
 
 (define (compute-check-form assertion message env)
   (define (wrap form)
