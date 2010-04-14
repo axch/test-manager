@@ -1,3 +1,52 @@
+From 1.1 to 1.2:
+- Assertions assert-< assert-> assert-<= assert->= added
+- It is now an intentional, supported feature that you can use
+  a delayed expression in the assertion failure message position
+  to do arbitrary computation if the assertion fails.  The return
+  value of said computation will be printed as an additional message
+  in the failure report; and the suite will not crash even if that
+  value fails to be a string.
+- There is now a clear-registered-tests! procedure for interactive use.
+
+Changes remaining to describe:
+------------------------------------------------------------------------
+r759 | axch | 2008-11-05 17:52:23 -0500 (Wed, 05 Nov 2008) | 4 lines
+Changed paths:
+   M /trunk/test-manager/assertions.scm
+   M /trunk/test-manager/load.scm
+   A /trunk/test-manager/matching.scm
+   M /trunk/test-manager/portability.scm
+
+Made assert-match user-extensible in MIT Scheme by defining methods on
+the generic function generic-match.
+
+------------------------------------------------------------------------
+r777 | axch | 2009-12-25 15:38:12 -0500 (Fri, 25 Dec 2009) | 5 lines
+Changed paths:
+   M /trunk/test-manager/all-tests.scm
+   M /trunk/test-manager/assertions.scm
+   M /trunk/test-manager/failure-report-demo.scm
+
+Wrote a catch-all check macro that does what I hope is the right thing
+with test forms and the values of their arguments.  Unfortunately, I
+wrote it in syntactic closures, so it doesn't work in Guile (yet).
+
+Also define-each-check
+
+------------------------------------------------------------------------
+r782 | axch | 2010-01-05 14:34:18 -0500 (Tue, 05 Jan 2010) | 4 lines
+Changed paths:
+   M /trunk/test-manager/all-tests.scm
+   A /trunk/test-manager/interactions.scm
+   M /trunk/test-manager/load.scm
+   M /trunk/test-manager/todo.txt
+
+Wrote an (interaction ...) macro for writing tests that look just like
+REPL sessions.
+
+Carefully test the check and interaction macros in Guile; worry
+about (produces foo) being useful at the Guile repl.
+
 From 1.0 to 1.1:
 
 - You can now use promises (made by delay) as assertion failure
@@ -9,3 +58,5 @@ From 1.0 to 1.1:
 - Added define-each-test to make single-form tests out of each of its
   argument expressions.  This is a convenience over writing
   (define-test (assert-foo ... )) over and over.
+
+
