@@ -21,7 +21,7 @@ along with Test Manager.  If not, see <http://www.gnu.org/licenses/>.
 
 =head1 NAME
 
-test-manager/ - An automatic unit-testing framework for MIT Scheme or (formerly) Guile
+test-manager/ - An automatic unit-testing framework for MIT Scheme
 
 =head1 SYNOPSYS
 
@@ -220,6 +220,12 @@ Runs all tests registered so far, and prints a report of the results.
 Returns the number of tests that did not pass.  This could have been
 defined as C<(run-test '())>.
 
+=item (clear-registered-tests!)
+
+Unregister all tests.  Useful when loading and reloading test suites
+interactively.  For more elaborate test structure manipulation
+facilities, see also test-group.scm.
+
 =back
 
 =head2 Checks
@@ -397,14 +403,15 @@ C<assert-equivalent> as, for example, C<(define assert-equal
 Like assert-=, but with a different comparator.  In particular, these
 aren't equivalence relations, so the order of arguments matters.
 
-=item (assert-matches regexp string [message])
+=item (assert-matches pattern object [message])
 
-Passes iff the given regular expression matches the given string.
+Passes iff the given object matches the given pattern, per
+C<generic-match>.
 
-=item (assert-no-match regexp string [message])
+=item (assert-no-match pattern object [message])
 
-Passes iff the given regular expression does not match the given
-string.
+Passes iff the given object does not match the given pattern, likewise
+per C<generic-match>.
 
 =item (assert-in-delta expected actual delta [message])
 
@@ -415,6 +422,23 @@ values.
 
 =back
 
+=head1 PORTABILITY
+
+I originally started this project with MIT Scheme and Guile in mind as
+target Scheme implementations.  That aim met with success through
+version 1.1, but as of version 1.2 I dropped explicit support for the
+Guile port.  I have left all the portability code intact; the vast
+majority of the documented features should work in Guile.  Also, since
+this software has been two-Scheme for much of its life, I expect it
+should not be hard to port to other Schemes.
+
+The specific things that I know do not work in Guile are: C<produces>
+does not work in the Guile REPL (though it does still work inside
+C<interaction>) which rather defeats its purpose; C<generic-match> is
+not actually a generic procedure in Guile (though that could
+presumably be fixed by one who knew Guile's generic procedure
+facilities); and C<check> does not accept a message argument in Guile.
+
 =head1 BUGS
 
 This unit testing framework is a work in progress.  The test groups do
@@ -422,15 +446,6 @@ not support as much shared set up code among their tests as I would
 like, and the language for explicit test group handling is
 ill-specified and undocumented (peruse test-group.scm if interested).
 Suggestions are welcome.
-
-Also, as of version 1.2, I have abandoned the Guile port.  Most of the
-facilities described above should work in Guile as well as MIT Scheme.
-The exceptions I know are that C<produces> does not work in the Guile
-REPL (though it does still work inside C<interaction>) which rather
-defeats its purpose; that C<generic-match> is not actually a generic
-procedure in Guile (though that could presumably be fixed by one who
-knew Guile's generic procedure facilities); and that C<check> does not
-accept a message argument in Guile.
 
 =head1 AUTHOR
 
