@@ -1,6 +1,8 @@
 From 1.1 to 1.2:
-- There is now a check macro that is largely meant to replace
-  the assert-foo procedures.
+- Official support for Guile dropped.  Most everything should still
+  work.  I don't know how hard the rest is to port.
+- There is now a check macro that is largely meant to replace the
+  assert-foo procedures.
   - Also define-each-check, which is a combination of define-each-test
     and check
 - The notion of "matching" is now extensible via the generic (in the
