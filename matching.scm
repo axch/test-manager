@@ -48,7 +48,9 @@
 
   (define-method generic-match ((pattern <inexact>) (object <inexact>))
     (or (= pattern object)
-	(= pattern (->significant-figures 5 object))))))
+	(= pattern (->significant-figures 5 object))
+	(= (->significant-figures 12 pattern)
+	   (->significant-figures 12 object))))))
 
 (define (->significant-figures places number)
   (define (round-down? digit-trail)
