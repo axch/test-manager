@@ -1,9 +1,9 @@
-NAME
+Name
 ====
 
 test-manager/ - An automatic unit-testing framework for MIT Scheme
 
-SYNOPSYS
+Synopsys
 ========
 
 ```scheme
@@ -48,7 +48,7 @@ SYNOPSYS
 (run-test '(simple-stuff arithmetic))
 ```
 
-DESCRIPTION
+Description
 ===========
 
 This test framework defines a language for specifying test suites and
@@ -388,7 +388,7 @@ the given `expected` value by no more than `delta`.  Use this in
 preference to `assert-=` to check sameness of inexact numerical
 values.
 
-PORTABILITY
+Portability
 ===========
 
 I originally started this project with MIT Scheme and Guile in mind as
@@ -406,7 +406,7 @@ not actually a generic procedure in Guile (though that could
 presumably be fixed by one who knew Guile's generic procedure
 facilities); and `check` does not accept a message argument in Guile.
 
-BUGS
+Bugs
 ====
 
 This unit testing framework is a work in progress.  The test groups do
@@ -415,12 +415,12 @@ like, and the language for explicit test group handling is
 ill-specified and undocumented (peruse test-group.scm if interested).
 Suggestions are welcome.
 
-AUTHOR
+Author
 ======
 
 Alexey Radul, axch@mit.edu
 
-LICENSE
+License
 =======
 
 Copyright 2007-2008 Alexey Radul.
