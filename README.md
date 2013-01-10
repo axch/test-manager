@@ -1,22 +1,3 @@
-----------------------------------------------------------------------
-Copyright 2007-2008 Alexey Radul.
-----------------------------------------------------------------------
-This file is part of Test Manager.
-
-Test Manager is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Test Manager is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Test Manager.  If not, see <http://www.gnu.org/licenses/>.
-----------------------------------------------------------------------
-
 NAME
 ====
 
@@ -83,10 +64,10 @@ bookkeeping.  A test is considered to pass if it returns normally,
 and to fail if it raises some condition that it does not handle
 (tests escaping into continuations leads to unspecified behavior).
 
-The framework provides a C<check> macro and a library of assertion
+The framework provides a `check` macro and a library of assertion
 procedures that can be invoked in tests and have the desired behavior
 of raising an appropriate condition if they fail.  The framework also
-provides an C<interaction> macro, together with a C<produces>
+provides an `interaction` macro, together with a `produces`
 procedure, for simulating read-eval-print interactions, and an
 extensible pattern-matching facility for easier testing of the
 relevant aspects of a result while ignoring the irrelevant ones.
@@ -102,13 +83,13 @@ the root of the test group hierarchy.
 
 =item (define-test (name) expression ... )
 
-Define a test named C<name> that consists of the given expressions,
+Define a test named `name` that consists of the given expressions,
 and add it to the current test group.  When the test is run, the
 expressions will be executed in order, just like the body of any
 procedure.  If the test raises any condition that it does not handle,
 it is considered to have failed.  If it returns normally, it is
 considered to have passed.  Usually, tests will contain uses of the
-C<check> macro or of assertions from the list below, which raise
+`check` macro or of assertions from the list below, which raise
 appropriate conditions when they fail.  In the spirit of Lisp
 docstrings, if the first expression in the test body is a literal
 string, that string will be included in the failure report if the test
@@ -127,7 +108,7 @@ to do this, but it is provided for completeness.
 
 Define a one-expression anonymous test.  The single expression will be
 printed in the failure report if the test fails.  This is a special
-case of C<define-each-test>, below.
+case of `define-each-test`, below.
 
 =item (define-each-test expression ... )
 
@@ -138,7 +119,7 @@ will be printed in that test's failure report.
 =item (define-each-check expression ...)
 
 Define a one-expression anonymous test for each of the given
-expressions by wrapping it in a use of the C<check> macro, below.
+expressions by wrapping it in a use of the `check` macro, below.
 
 If you have many simple independent checks you need to make and
 you don't want to invent names for each individual one, this is the
@@ -146,9 +127,9 @@ test definition syntax for you.
 
 =item (in-test-group name expression ... )
 
-Locate (or create) a test subgroup called C<name> in the current test
+Locate (or create) a test subgroup called `name` in the current test
 group.  Then temporarily make this subgroup the current test group,
-and execute the expressions in the body of C<in-test-group>.  This
+and execute the expressions in the body of `in-test-group`.  This
 groups any tests and further subgroups defined by those expressions
 into this test group.  Test groups can nest arbitrarily deep.  Test
 groups serve to disambiguate the names of tests, and to group them
@@ -171,11 +152,11 @@ for this group.
 =item (define-surround expression ...)
 
 Defines a sequence of expressions to be run surrounding every test in
-the current test group.  Inside the C<define-surround>, the identifier
-C<run-test> is bound to a nullary procedure that actually runs the
-test.  The test will get run as many times as you call C<run-test>, so
+the current test group.  Inside the `define-surround`, the identifier
+`run-test` is bound to a nullary procedure that actually runs the
+test.  The test will get run as many times as you call `run-test`, so
 you can run each test under several conditions (or accidentally not
-run it at all if you forget to call C<run-test>).  Clobbers any
+run it at all if you forget to call `run-test`).  Clobbers any
 previously defined surround for this group.
 
 =item (define-group-set-up expression ...)
@@ -194,7 +175,7 @@ group tear down for this group.
 
 Defines a sequence of expressions to be run once surrounding running
 the tests in the current test group.  Inside the
-C<define-group-surround>, the identifier C<run-test> is bound to a
+`define-group-surround`, the identifier `run-test` is bound to a
 nullary procedure that actually runs the tests in this group.
 Clobbers any previously defined group surround for this group.
 
@@ -210,14 +191,14 @@ runs it, and prints a report of the results.  Returns the number of
 tests that did not pass.  An empty list for a name stack indicates the
 whole group, a singleton list indicates that immediate descendant, a
 two-element list indicates a descendant of a descendant, etc.  For
-example, C<(run-test '(simple-stuff arithmetic))> would run the first
+example, `(run-test '(simple-stuff arithmetic))` would run the first
 test defined in the example at the top of this page.
 
 =item (run-registered-tests)
 
 Runs all tests registered so far, and prints a report of the results.
 Returns the number of tests that did not pass.  This could have been
-defined as C<(run-test '())>.
+defined as `(run-test '())`.
 
 =item (clear-registered-tests!)
 
@@ -228,7 +209,7 @@ facilities, see also test-group.scm.
 Checks
 ------
 
-The C<check> macro is the main mechanism for asking tests to actually
+The `check` macro is the main mechanism for asking tests to actually
 test something:
 
 =item (check expression [message])
@@ -238,7 +219,7 @@ value (to wit, not #f).  If the expression returns #f, constructs a
 failure report from the expression, the message if any, and the values
 of the immediate subexpressions of the expression.
 
-C<check> is a macro so that it can examine the expression provided and
+`check` is a macro so that it can examine the expression provided and
 construct a useful failure report if the expression does not return a
 true value.  Specifically, the failure report includes the expression
 itself, as well as the values that all subexpressions (except the
@@ -254,12 +235,12 @@ fails and reports
 so you can see right away both what failed, and, to some degree, what
 the problem was.
 
-In the event that the failure report generated by C<check> itself is
-inadequate, C<check> also accepts an optional second argument that is
+In the event that the failure report generated by `check` itself is
+inadequate, `check` also accepts an optional second argument that is
 interpreted as a user-supplied message to be added to the failure
 report.  The message can be either a string, or an arbitrary object
-that will be coerced to a string by C<display>, or a promise (as
-created by C<delay>), which will be forced and the result coerced to a
+that will be coerced to a string by `display`, or a promise (as
+created by `delay`), which will be forced and the result coerced to a
 string.  The latter is useful for checks with dynamically computed
 messages, because that computation will then only be performed if the
 test actually fails, and in general for doing some computation at
@@ -276,38 +257,38 @@ whether it was what you expected, whereas when writing a unit test you
 write a check form that contains both the expression under test and
 the criterion you expect it to satisfy.  In order to decrease the
 impedance mismatch between these two ways of verifying what a program
-does, C<test-manager> provides the procedure C<produces>, which
+does, `test-manager` provides the procedure `produces`, which
 retroactively checks the last return value, and the macro
-C<interaction>, which enables C<produces> to work inside a unit test.
+`interaction`, which enables `produces` to work inside a unit test.
 
 =item (produces pattern)
 
 Checks that the return value of the previous evaluated expression
-matches (via C<generic-match>, below) the provided pattern.  This
+matches (via `generic-match`, below) the provided pattern.  This
 works at the REPL via the REPL history, and also works inside a use of
-the C<interaction> macro.
+the `interaction` macro.
 
 =item (interation form ...)
 
-Tracks the return values of each C<form> and makes them available for
-use with C<produces>.  For an example, see the last test in the
+Tracks the return values of each `form` and makes them available for
+use with `produces`.  For an example, see the last test in the
 synopsis.
 
 Pattern Matching
 ----------------
 
 The user-extensible pattern matching facility is the generic procedure
-C<generic-match>.  This procedure is generic in the sense of the
+`generic-match`.  This procedure is generic in the sense of the
 Scheme Object System provided with MIT Scheme.  It can be used in
-tests directly, and is automatically invoked by C<produces> above, and
-C<assert-match> and C<assert-no-match> below.
+tests directly, and is automatically invoked by `produces` above, and
+`assert-match` and `assert-no-match` below.
 
 =item (generic-match pattern object)
 
 Returns #t iff the given object matches the given pattern.  The
 meaning of "matches" is user-extensible by adding methods to this
 generic procedure.  By default compares whether the pattern is
-C<equal?> to the object, but also see provided methods below.
+`equal?` to the object, but also see provided methods below.
 
 =item (generic-match pattern-string string)
 
@@ -317,7 +298,7 @@ as a regular expression and matches it against the object.
 =item (generic-match pattern-pair pair)
 
 If the pattern and the object are pairs, recursively matches their
-C<car>s and C<cdr>s against each other.
+`car`s and `cdr`s against each other.
 
 =item (generic-match pattern-vector vector)
 
@@ -328,28 +309,28 @@ components against each other elementwise.
 
 If the pattern and the object are inexact numbers, checks them for
 equality, and then then checks whether the object rounded to five
-significant digits equals the pattern.  For example, C<(generic-match
-1.4142 (sqrt 2))> returns #t, as does
-C<(generic-match 1.4142135623730951 (sqrt 2))>.
+significant digits equals the pattern.  For example, `(generic-match
+1.4142 (sqrt 2))` returns #t, as does
+`(generic-match 1.4142135623730951 (sqrt 2))`.
 
 Assertions
 ----------
 
 The following assertion procedures are provided for situations where
-C<check> being a macro makes it unweildy.  The C<message> arguments to
+`check` being a macro makes it unweildy.  The `message` arguments to
 the assertions are user-specified messages to print to the output if
-the given assertion fails.  The C<assert-proc> assertion requires a
+the given assertion fails.  The `assert-proc` assertion requires a
 message argument because it cannot construct a useful output without
 one, and because it is not really meant for extensive direct use.  The
 message is optional for the other assertions because they can say
 something at least mildly informative even without a user-supplied
 message.  In any case, the message arguments are treated the same way
-as by C<check>.
+as by `check`.
 
 =item (assert-proc message proc)
 
 Passes iff the given procedure, invoked with no arguments, returns a
-true value.  On failure, arranges for the given C<message> to appear in
+true value.  On failure, arranges for the given `message` to appear in
 the failure report.  This is a primitive assertion in whose terms
 other assertions are defined.
 
@@ -364,12 +345,12 @@ Passes iff the given value is a false value (to wit, #f).
 =item (assert-equal expected actual [message])
  Likewise assert-eqv, assert-eq, and assert-=
 
-Passes iff the given C<actual> value is equivalent, according to the
-corresponding predicate, to the C<expected> value.  Produces a
+Passes iff the given `actual` value is equivalent, according to the
+corresponding predicate, to the `expected` value.  Produces a
 reasonably helpful message on failure, and includes the optional
-C<message> argument in it if present.  When in doubt, use
-C<assert-equal> to compare most things; use C<assert-=> to compare
-exact numbers like integers; and use C<assert-in-delta>, below, for
+`message` argument in it if present.  When in doubt, use
+`assert-equal` to compare most things; use `assert-=` to compare
+exact numbers like integers; and use `assert-in-delta`, below, for
 inexact numbers like floating points.
 
 =item assert-equals, assert=
@@ -381,9 +362,9 @@ Are aliases for assert-equal and assert-=, respectively.
 This is intended as a tool for building custom assertions.  Returns an
 assertion procedure that compares an expected and an actual value with
 the given predicate and produces a reasonable failure message.
-C<assert-equal> and company could have been defined in terms of
-C<assert-equivalent> as, for example, C<(define assert-equal
-(assert-equivalent equal? "equal?"))>.
+`assert-equal` and company could have been defined in terms of
+`assert-equivalent` as, for example, `(define assert-equal
+(assert-equivalent equal? "equal?"))`.
 
 =item assert-< assert-> assert-<= assert->=
 
@@ -393,18 +374,18 @@ aren't equivalence relations, so the order of arguments matters.
 =item (assert-matches pattern object [message])
 
 Passes iff the given object matches the given pattern, per
-C<generic-match>.
+`generic-match`.
 
 =item (assert-no-match pattern object [message])
 
 Passes iff the given object does not match the given pattern, likewise
-per C<generic-match>.
+per `generic-match`.
 
 =item (assert-in-delta expected actual delta [message])
 
-Passes iff the given C<actual> value differs, in absolute value, from
-the given C<expected> value by no more than C<delta>.  Use this in
-preference to C<assert-=> to check sameness of inexact numerical
+Passes iff the given `actual` value differs, in absolute value, from
+the given `expected` value by no more than `delta`.  Use this in
+preference to `assert-=` to check sameness of inexact numerical
 values.
 
 PORTABILITY
@@ -418,12 +399,12 @@ majority of the documented features should work in Guile.  Also, since
 this software has been two-Scheme for much of its life, I expect it
 should not be hard to port to other Schemes.
 
-The specific things that I know do not work in Guile are: C<produces>
+The specific things that I know do not work in Guile are: `produces`
 does not work in the Guile REPL (though it does still work inside
-C<interaction>) which rather defeats its purpose; C<generic-match> is
+`interaction`) which rather defeats its purpose; `generic-match` is
 not actually a generic procedure in Guile (though that could
 presumably be fixed by one who knew Guile's generic procedure
-facilities); and C<check> does not accept a message argument in Guile.
+facilities); and `check` does not accept a message argument in Guile.
 
 BUGS
 ====
@@ -438,3 +419,23 @@ AUTHOR
 ======
 
 Alexey Radul, axch@mit.edu
+
+LICENSE
+=======
+
+Copyright 2007-2008 Alexey Radul.
+
+This file is part of Test Manager.
+
+Test Manager is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Test Manager is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Test Manager.  If not, see <http://www.gnu.org/licenses/>.
