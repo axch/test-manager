@@ -48,6 +48,12 @@ Synopsys
 (run-test '(simple-stuff arithmetic))
 ```
 
+Installation
+============
+
+Easy as can be: grab the source and put it anywhere you want.  To use,
+`load` the toplevel `load.scm` file.
+
 Description
 ===========
 
