@@ -58,11 +58,11 @@ Description
 ===========
 
 This test framework defines a language for specifying test suites and
-a simple set of commands for running them.  A test suite is a
+a set of commands for running them.  A test suite is a
 collection of individual tests grouped into a hierarchy of test
 groups.  The test group hierarchy serves to semantically aggregate the
 tests, allowing the definition of shared code for set up, tear down,
-and surround, and also partition the test namespace to avoid
+and surround, and also partitioning the test namespace to avoid
 collisions.
 
 The individual tests are ordinary procedures, with some associated
@@ -210,7 +210,7 @@ defined as `(run-test '())`.
 
 Unregister all tests.  Useful when loading and reloading test suites
 interactively.  For more elaborate test structure manipulation
-facilities, see also test-group.scm.
+facilities, see also `test-group.scm`.
 
 Checks
 ------
@@ -221,7 +221,7 @@ test something:
 `(check expression [message])`
 
 Executes the expression, and passes iff that expression returns a true
-value (to wit, not #f).  If the expression returns #f, constructs a
+value (to wit, not `#f`).  If the expression returns `#f`, constructs a
 failure report from the expression, the message if any, and the values
 of the immediate subexpressions of the expression.
 
@@ -260,7 +260,7 @@ Interactions
 ------------
 
 The style of interactively fooling with a piece of code at the
-read-eval-print loop differs from the style of writing units tests for
+read-eval-print loop differs from the style of writing unit tests for
 a piece of code and running them.  One notable difference is that at
 the REPL you write some expression and examine its return value to see
 whether it was what you expected, whereas when writing a unit test you
@@ -295,7 +295,7 @@ tests directly, and is automatically invoked by `produces` above, and
 
 `(generic-match pattern object)`
 
-Returns #t iff the given object matches the given pattern.  The
+Returns `#t` iff the given object matches the given pattern.  The
 meaning of "matches" is user-extensible by adding methods to this
 generic procedure.  By default compares whether the pattern is
 `equal?` to the object, but also see provided methods below.
@@ -319,15 +319,15 @@ components against each other elementwise.
 
 If the pattern and the object are inexact numbers, checks them for
 equality, and then then checks whether the object rounded to five
-significant digits equals the pattern.  For example, `(generic-match
-1.4142 (sqrt 2))` returns #t, as does
+or twelve significant digits equals the pattern.  For example, `(generic-match
+1.4142 (sqrt 2))` returns `#t`, as does
 `(generic-match 1.4142135623730951 (sqrt 2))`.
 
 Assertions
 ----------
 
 The following assertion procedures are provided for situations where
-`check` being a macro makes it unweildy.  The `message` arguments to
+`check` being a macro makes it unwieldy.  The `message` arguments to
 the assertions are user-specified messages to print to the output if
 the given assertion fails.  The `assert-proc` assertion requires a
 message argument because it cannot construct a useful output without
@@ -335,7 +335,8 @@ one, and because it is not really meant for extensive direct use.  The
 message is optional for the other assertions because they can say
 something at least mildly informative even without a user-supplied
 message.  In any case, the message arguments are treated the same way
-as by `check`.
+as by `check`: they can be strings, objects to be `display`ed, or
+promises to be `force`d.
 
 `(assert-proc message proc)`
 
@@ -419,11 +420,19 @@ facilities); and `check` does not accept a message argument in Guile.
 Bugs
 ====
 
-This unit testing framework is a work in progress.  The test groups do
-not support as much shared set up code among their tests as I would
-like, and the language for explicit test group handling is
-ill-specified and undocumented (peruse test-group.scm if interested).
-Suggestions are welcome.
+The language for explicit test group handling is ill-specified and
+undocumented (peruse `test-group.scm` if interested).
+
+The framework is inclined to catch all conditions raised by any test,
+so this tends to break code that depends on the execution of condition
+handlers that are set up outside the framework (for example, one way
+to make vectors of procedures be applicable objects (returning the
+vector of results of applying all the procedures) would be to install
+a global handler for the "inapplicable object" condition that tries
+the above tweak and restarts with that answer if it works).
+`test-manager` contains a hack to work around this problem for this
+case, but this ugliness may lead to other bugs that I don't know
+about.
 
 Author
 ======
