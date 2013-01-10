@@ -29,9 +29,12 @@
 	(load (string-concatenate (list filename ".scm"))))))
  (else ;; The MIT Scheme that knows it is 'mit' isn't in Debian Stable yet
   (define (load-relative filename)
-    (with-working-directory-pathname 
-     (directory-namestring (current-load-pathname))
-     (lambda () (load filename))))))
+    (let ((place (ignore-errors current-load-pathname)))
+      (if (pathname? place)
+          (with-working-directory-pathname
+           (directory-namestring (current-load-pathname))
+           (lambda () (load filename)))
+          (load filename))))))
 
 (load-relative "portability")
 (load-relative "ordered-map")
