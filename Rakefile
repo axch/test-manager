@@ -28,12 +28,12 @@ task :test => [ :mit_scheme_test, :guile_test ]
 
 desc "Run the full test suite in MIT Scheme"
 task :mit_scheme_test do 
-  sh %Q{mit-scheme --batch-mode --eval "(set! load/suppress-loading-message? #t)" --load load.scm --load all-tests.scm --eval "(%exit (run-registered-tests))"}
+  sh %Q{mit-scheme --batch-mode --eval "(set! load/suppress-loading-message? #t)" --load load.scm --load test/load.scm --eval "(%exit (run-registered-tests))"}
 end
 
 desc "Run the full test suite in Guile"
 task :guile_test do
-  sh %Q{guile -l load.scm -l all-tests.scm -c "(exit (run-registered-tests))"}
+  sh %Q{guile -l load.scm -l test/load.scm -c "(exit (run-registered-tests))"}
 end
 
 desc "Run a demonstration test suite to show off failure reports in MIT Scheme"
