@@ -17,6 +17,9 @@
 ;;; along with Test Manager.  If not, see <http://www.gnu.org/licenses/>.
 ;;; ----------------------------------------------------------------------
 
+;;; A lookup table that also remembers the order of insertion of
+;;; entries, and offers predictable traversals.
+
 (define-record-type ordered-map
   (%make-ordered-map entry-list entry-table)
   ordered-map?
