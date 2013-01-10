@@ -21,7 +21,11 @@ Add a general-purpose pattern matcher, or normal form converter, or
 something (incl good handling of records) for use with check.
 - A fail function that always fails (but emits its message, yes)
 
-Clone quickcheck?
+The quickcheck experience suggests the following feature: allow test
+definitions to take arguments, thereby becoming properties; and allow
+separate specification of examples to try them on (hand-crafted
+examples, generators that make examples randomly, and maybe various
+model checking or theorem proving machinery).
 
 Api features
 - Is it ok to write (run-test foo bar) inside of a surround definition
@@ -41,8 +45,8 @@ Api features
   test-definition ...) facility (that would allow mutation of the fixtures
   internally, but restore them at every test)?
 - A way to mark that certain tests or assertions are expected to fail?
-  Perhaps with keyword arguments to the appropriate functions?  Grem
-  sent email titled "expected failure features for test-manager"
+  Perhaps with keyword arguments to the appropriate functions?  See
+  comment below.
 - with-test-info macro (and function) adds extra information
   to the failure display
     Example failure display in SchemeUnit
@@ -54,6 +58,30 @@ Api features
     expression: (check-pred even? elt)
     params:     (#<procedure:even?> 9)
     --------------------
+
+On expected failures, Gremio says:
+  Sometimes we find that something is broken, and we don't know just
+  how to fix it at the time we find the bug, and would like to commit
+  a broken test case for it, but, well, it's a broken test case, and
+  that sucks.  So we'd like the test case to show how it should look
+  when it's not broken, but also not to complain just because it is
+  broken.  To wit, the following suggested optional arguments to
+  assert-foo:
+
+  #:fails
+    says that the test is supposed to fail
+  #:fails-with value
+    says that the test should fail, and in particular, instead of expecting
+    what it should expect, check that the wrong thing returned is the given
+    value (or matches it, etc., as per the assertion this is supplied to.
+    This is more interesting in the assert-throws world, and generally for
+    exceptions thrown from things that shouldn't -- should there be a
+    separate [#:fails-throwing exception]?)
+  #:fails-because "explanation"
+    like #:fails, just says that the test should fail, but also specifies a
+    human-readable explanation.  If the test at some point no longer fails,
+    for example, or fails a different way than specified with #:fails-with,
+    then this might get displayed somehow.
 
 Emacs interface:
 - run-test-at-point
@@ -83,7 +111,6 @@ define-test and possibly define-set-up, define-group-set-up, etc.  In
 contrast, there is also the explict set-tg:group-set-up! and their
 ilk.  The function (current-test-group) functions as a bridge between
 the two worlds.
-
-Language for defining test suites
-Language for defining individual tests
-Language for running tests and getting results
+- Language for defining test suites
+- Language for defining individual tests
+- Language for running tests and getting results
