@@ -17,55 +17,58 @@ You should have received a copy of the GNU General Public License
 along with Test Manager.  If not, see <http://www.gnu.org/licenses/>.
 ----------------------------------------------------------------------
 
-=pod
-
-=head1 NAME
+NAME
+====
 
 test-manager/ - An automatic unit-testing framework for MIT Scheme
 
-=head1 SYNOPSYS
+SYNOPSYS
+========
 
-  (load "test-manager/load.scm")
+```scheme
+(load "test-manager/load.scm")
 
-  ; This is a test group named simple-stuff
-  (in-test-group
-   simple-stuff
+; This is a test group named simple-stuff
+(in-test-group
+ simple-stuff
 
-   ; This is one test named arithmetic
-   (define-test (arithmetic)
-     "Checking that set! and arithmetic work"
-     (define foo 5)
-     (check (= 5 foo) "Foo should start as five.")
-     (set! foo 6)
-     (check (= 36 (* foo foo))))
+ ; This is one test named arithmetic
+ (define-test (arithmetic)
+   "Checking that set! and arithmetic work"
+   (define foo 5)
+   (check (= 5 foo) "Foo should start as five.")
+   (set! foo 6)
+   (check (= 36 (* foo foo))))
 
-   ; Each of these will become a separate anonymous one-form test
-   (define-each-test
-     (check (= 4 (+ 2 2)) "Two and two should make four.")
-     (check (= 2147483648 (+ 2147483647 1)) "Addition shouldn't overflow."))
+ ; Each of these will become a separate anonymous one-form test
+ (define-each-test
+   (check (= 4 (+ 2 2)) "Two and two should make four.")
+   (check (= 2147483648 (+ 2147483647 1)) "Addition shouldn't overflow."))
 
-   ; Each of these will become a separate anonymous one-form test using check
-   (define-each-check
-     (= 6 (+ 2 2 2))
-     (equal? '(1 2 3) (cons 1 '(2 3))))
+ ; Each of these will become a separate anonymous one-form test using check
+ (define-each-check
+   (= 6 (+ 2 2 2))
+   (equal? '(1 2 3) (cons 1 '(2 3))))
 
-   ; This is a test that looks like a REPL interaction
-   (define-test (interactive)
-     (interaction
-      (define foo 5)
-      foo
-      (produces 5)  ; This compares against the value of the last form
-      (set! foo 6)
-      (* foo foo)
-      (produces 36))))
+ ; This is a test that looks like a REPL interaction
+ (define-test (interactive)
+   (interaction
+    (define foo 5)
+    foo
+    (produces 5)  ; This compares against the value of the last form
+    (set! foo 6)
+    (* foo foo)
+    (produces 36))))
 
-  (run-registered-tests)
+(run-registered-tests)
 
-  ; Can run individual groups or tests with
-  (run-test '(simple-stuff))
-  (run-test '(simple-stuff arithmetic))
+; Can run individual groups or tests with
+(run-test '(simple-stuff))
+(run-test '(simple-stuff arithmetic))
+```
 
-=head1 DESCRIPTION
+DESCRIPTION
+===========
 
 This test framework defines a language for specifying test suites and
 a simple set of commands for running them.  A test suite is a
@@ -88,15 +91,14 @@ procedure, for simulating read-eval-print interactions, and an
 extensible pattern-matching facility for easier testing of the
 relevant aspects of a result while ignoring the irrelevant ones.
 
-=head2 Defining Test Suites
+Defining Test Suites
+--------------------
 
 All tests are grouped into a hierarchy of test groups.
 At any point in the definition of a test suite, there is an implicit
 "current test group", into which tests and subgroups can be added.  By
 default, the current test group is the top-level test group, which is
 the root of the test group hierarchy.
-
-=over
 
 =item (define-test (name) expression ... )
 
@@ -196,13 +198,10 @@ C<define-group-surround>, the identifier C<run-test> is bound to a
 nullary procedure that actually runs the tests in this group.
 Clobbers any previously defined group surround for this group.
 
-=back
-
-=head2 Running Test Suites
+Running Test Suites
+-------------------
 
 The following procedures are provided for running test suites:
-
-=over
 
 =item (run-test name-stack)
 
@@ -226,14 +225,11 @@ Unregister all tests.  Useful when loading and reloading test suites
 interactively.  For more elaborate test structure manipulation
 facilities, see also test-group.scm.
 
-=back
-
-=head2 Checks
+Checks
+------
 
 The C<check> macro is the main mechanism for asking tests to actually
 test something:
-
-=over
 
 =item (check expression [message])
 
@@ -241,8 +237,6 @@ Executes the expression, and passes iff that expression returns a true
 value (to wit, not #f).  If the expression returns #f, constructs a
 failure report from the expression, the message if any, and the values
 of the immediate subexpressions of the expression.
-
-=back
 
 C<check> is a macro so that it can examine the expression provided and
 construct a useful failure report if the expression does not return a
@@ -271,7 +265,8 @@ messages, because that computation will then only be performed if the
 test actually fails, and in general for doing some computation at
 check failure time.
 
-=head2 Interactions
+Interactions
+------------
 
 The style of interactively fooling with a piece of code at the
 read-eval-print loop differs from the style of writing units tests for
@@ -284,8 +279,6 @@ impedance mismatch between these two ways of verifying what a program
 does, C<test-manager> provides the procedure C<produces>, which
 retroactively checks the last return value, and the macro
 C<interaction>, which enables C<produces> to work inside a unit test.
-
-=over
 
 =item (produces pattern)
 
@@ -300,17 +293,14 @@ Tracks the return values of each C<form> and makes them available for
 use with C<produces>.  For an example, see the last test in the
 synopsis.
 
-=back
-
-=head2 Pattern Matching
+Pattern Matching
+----------------
 
 The user-extensible pattern matching facility is the generic procedure
 C<generic-match>.  This procedure is generic in the sense of the
 Scheme Object System provided with MIT Scheme.  It can be used in
 tests directly, and is automatically invoked by C<produces> above, and
 C<assert-match> and C<assert-no-match> below.
-
-=over
 
 =item (generic-match pattern object)
 
@@ -342,9 +332,8 @@ significant digits equals the pattern.  For example, C<(generic-match
 1.4142 (sqrt 2))> returns #t, as does
 C<(generic-match 1.4142135623730951 (sqrt 2))>.
 
-=back
-
-=head2 Assertions
+Assertions
+----------
 
 The following assertion procedures are provided for situations where
 C<check> being a macro makes it unweildy.  The C<message> arguments to
@@ -356,8 +345,6 @@ message is optional for the other assertions because they can say
 something at least mildly informative even without a user-supplied
 message.  In any case, the message arguments are treated the same way
 as by C<check>.
-
-=over 
 
 =item (assert-proc message proc)
 
@@ -420,9 +407,8 @@ the given C<expected> value by no more than C<delta>.  Use this in
 preference to C<assert-=> to check sameness of inexact numerical
 values.
 
-=back
-
-=head1 PORTABILITY
+PORTABILITY
+===========
 
 I originally started this project with MIT Scheme and Guile in mind as
 target Scheme implementations.  That aim met with success through
@@ -439,7 +425,8 @@ not actually a generic procedure in Guile (though that could
 presumably be fixed by one who knew Guile's generic procedure
 facilities); and C<check> does not accept a message argument in Guile.
 
-=head1 BUGS
+BUGS
+====
 
 This unit testing framework is a work in progress.  The test groups do
 not support as much shared set up code among their tests as I would
@@ -447,8 +434,7 @@ like, and the language for explicit test group handling is
 ill-specified and undocumented (peruse test-group.scm if interested).
 Suggestions are welcome.
 
-=head1 AUTHOR
+AUTHOR
+======
 
 Alexey Radul, axch@mit.edu
-
-=cut
