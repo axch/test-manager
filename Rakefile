@@ -58,5 +58,5 @@ end
 
 desc "Prepare a release tarball"
 task :release => [:doc, :clean] do
-  sh "cd #{File.dirname(__FILE__)}; " + %Q{tar --create --verbose --file ../test-manager-1.2.tar --directory .. --exclude="*.svn*" --exclude=.commitmail --exclude=todo.txt test-manager/}
+  sh "cd #{File.dirname(__FILE__)}; " + %Q{tar --create --verbose --file ../test-manager-1.2.tar --directory .. --exclude="*.git*" --exclude=.gitignore test-manager/}
 end
