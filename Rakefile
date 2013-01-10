@@ -53,7 +53,7 @@ end
 
 desc "Delete random temporary files that arise as one works"
 task :clean do
-  sh "cd #{File.dirname(__FILE__)}; find . -name '*~' | xargs rm -f; find . -name 'actions.log' | xargs rm -f; find . -name 'pod2htm*.tmp' | xargs rm -f; "
+  sh "cd #{File.dirname(__FILE__)}; find . -name '*~' | xargs rm -f; find . -name 'pod2htm*.tmp' | xargs rm -f; "
 end
 
 desc "Prepare a release tarball"
