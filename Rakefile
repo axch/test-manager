@@ -48,7 +48,7 @@ end
 
 desc "Generate html documentation"
 task :doc do
-  sh "cd #{File.dirname(__FILE__)}/doc/; cat testing.pod | pod2html > testing.html"
+  sh "redcarpet --parse-fenced-code-blocks --render-with-toc-data README.md > README.html"
 end
 
 desc "Delete random temporary files that arise as one works"
