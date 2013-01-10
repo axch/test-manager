@@ -38,12 +38,12 @@ end
 
 desc "Run a demonstration test suite to show off failure reports in MIT Scheme"
 task :demo do 
-  sh %Q{mit-scheme --batch-mode --eval "(set! load/suppress-loading-message? #t)" --load load.scm --load failure-report-demo.scm --eval "(%exit 0)"}
+  sh %Q{mit-scheme --batch-mode --eval "(set! load/suppress-loading-message? #t)" --load load.scm --load examples/failure-report-demo.scm --eval "(%exit 0)"}
 end
 
 desc "Run a demonstration test suite to show off failure reports in Guile"
 task :guile_demo do 
-  sh %Q{guile -l load.scm -l failure-report-demo.scm -c "(exit 0)"}
+  sh %Q{guile -l load.scm -l examples/failure-report-demo.scm -c "(exit 0)"}
 end
 
 desc "Generate html documentation"
