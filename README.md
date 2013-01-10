@@ -110,19 +110,19 @@ terse syntactic sugar for common usage patterns of this syntax.
 Define an explicitly anonymous test.  I can't see why you would want
 to do this, but it is provided for completeness.
 
-=item (define-test expression)
+`(define-test expression)`
 
 Define a one-expression anonymous test.  The single expression will be
 printed in the failure report if the test fails.  This is a special
 case of `define-each-test`, below.
 
-=item (define-each-test expression ... )
+`(define-each-test expression ... )`
 
 Define a one-expression anonymous test for each of the given
 expressions.  If any of the tests fail, the corresponding expression
 will be printed in that test's failure report.
 
-=item (define-each-check expression ...)
+`(define-each-check expression ...)`
 
 Define a one-expression anonymous test for each of the given
 expressions by wrapping it in a use of the `check` macro, below.
@@ -131,7 +131,7 @@ If you have many simple independent checks you need to make and
 you don't want to invent names for each individual one, this is the
 test definition syntax for you.
 
-=item (in-test-group name expression ... )
+`(in-test-group name expression ... )`
 
 Locate (or create) a test subgroup called `name` in the current test
 group.  Then temporarily make this subgroup the current test group,
@@ -143,19 +143,19 @@ semantically.  In particular, should a test fail, the names of the
 stack of groups it's in will be displayed along with the test name
 itself.
 
-=item (define-set-up expression ...)
+`(define-set-up expression ...)`
 
 Defines a sequence of expressions to be run before every test in
 the current test group.  Clobbers any previously defined set up
 for this group.
 
-=item (define-tear-down expression ...)
+`(define-tear-down expression ...)`
 
 Defines a sequence of expressions to be run after every test in
 the current test group.  Clobbers any previously defined tear down
 for this group.
 
-=item (define-surround expression ...)
+`(define-surround expression ...)`
 
 Defines a sequence of expressions to be run surrounding every test in
 the current test group.  Inside the `define-surround`, the identifier
@@ -165,19 +165,19 @@ you can run each test under several conditions (or accidentally not
 run it at all if you forget to call `run-test`).  Clobbers any
 previously defined surround for this group.
 
-=item (define-group-set-up expression ...)
+`(define-group-set-up expression ...)`
 
 Defines a sequence of expressions to be run once before running any
 test in the current test group.  Clobbers any previously defined group
 set up for this group.
 
-=item (define-group-tear-down expression ...)
+`(define-group-tear-down expression ...)`
 
 Defines a sequence of expressions to be run once after running all
 tests in the current test group.  Clobbers any previously defined
 group tear down for this group.
 
-=item (define-group-surround expression ...)
+`(define-group-surround expression ...)`
 
 Defines a sequence of expressions to be run once surrounding running
 the tests in the current test group.  Inside the
@@ -190,7 +190,7 @@ Running Test Suites
 
 The following procedures are provided for running test suites:
 
-=item (run-test name-stack)
+`(run-test name-stack)`
 
 Looks up the test indicated by name-stack in the current test group,
 runs it, and prints a report of the results.  Returns the number of
@@ -200,13 +200,13 @@ two-element list indicates a descendant of a descendant, etc.  For
 example, `(run-test '(simple-stuff arithmetic))` would run the first
 test defined in the example at the top of this page.
 
-=item (run-registered-tests)
+`(run-registered-tests)`
 
 Runs all tests registered so far, and prints a report of the results.
 Returns the number of tests that did not pass.  This could have been
 defined as `(run-test '())`.
 
-=item (clear-registered-tests!)
+`(clear-registered-tests!)`
 
 Unregister all tests.  Useful when loading and reloading test suites
 interactively.  For more elaborate test structure manipulation
@@ -218,7 +218,7 @@ Checks
 The `check` macro is the main mechanism for asking tests to actually
 test something:
 
-=item (check expression [message])
+`(check expression [message])`
 
 Executes the expression, and passes iff that expression returns a true
 value (to wit, not #f).  If the expression returns #f, constructs a
@@ -267,14 +267,14 @@ does, `test-manager` provides the procedure `produces`, which
 retroactively checks the last return value, and the macro
 `interaction`, which enables `produces` to work inside a unit test.
 
-=item (produces pattern)
+`(produces pattern)`
 
 Checks that the return value of the previous evaluated expression
 matches (via `generic-match`, below) the provided pattern.  This
 works at the REPL via the REPL history, and also works inside a use of
 the `interaction` macro.
 
-=item (interation form ...)
+`(interation form ...)`
 
 Tracks the return values of each `form` and makes them available for
 use with `produces`.  For an example, see the last test in the
@@ -289,29 +289,29 @@ Scheme Object System provided with MIT Scheme.  It can be used in
 tests directly, and is automatically invoked by `produces` above, and
 `assert-match` and `assert-no-match` below.
 
-=item (generic-match pattern object)
+`(generic-match pattern object)`
 
 Returns #t iff the given object matches the given pattern.  The
 meaning of "matches" is user-extensible by adding methods to this
 generic procedure.  By default compares whether the pattern is
 `equal?` to the object, but also see provided methods below.
 
-=item (generic-match pattern-string string)
+`(generic-match pattern-string string)`
 
 If the pattern and the object are strings, interprets the pattern
 as a regular expression and matches it against the object.
 
-=item (generic-match pattern-pair pair)
+`(generic-match pattern-pair pair)`
 
 If the pattern and the object are pairs, recursively matches their
 `car`s and `cdr`s against each other.
 
-=item (generic-match pattern-vector vector)
+`(generic-match pattern-vector vector)`
 
 If the pattern and the object are vectors, recursively matches their
 components against each other elementwise.
 
-=item (generic-match x y)
+`(generic-match x y)`
 
 If the pattern and the object are inexact numbers, checks them for
 equality, and then then checks whether the object rounded to five
@@ -333,22 +333,22 @@ something at least mildly informative even without a user-supplied
 message.  In any case, the message arguments are treated the same way
 as by `check`.
 
-=item (assert-proc message proc)
+`(assert-proc message proc)`
 
 Passes iff the given procedure, invoked with no arguments, returns a
 true value.  On failure, arranges for the given `message` to appear in
 the failure report.  This is a primitive assertion in whose terms
 other assertions are defined.
 
-=item (assert-true thing [message])
+`(assert-true thing [message])`
 
 Passes iff the given value is a true value (to wit, not #f).
 
-=item (assert-false thing [message])
+`(assert-false thing [message])`
 
 Passes iff the given value is a false value (to wit, #f).
 
-=item (assert-equal expected actual [message])
+`(assert-equal expected actual [message])`
  Likewise assert-eqv, assert-eq, and assert-=
 
 Passes iff the given `actual` value is equivalent, according to the
@@ -359,11 +359,11 @@ reasonably helpful message on failure, and includes the optional
 exact numbers like integers; and use `assert-in-delta`, below, for
 inexact numbers like floating points.
 
-=item assert-equals, assert=
+`assert-equals, assert=`
 
 Are aliases for assert-equal and assert-=, respectively.
 
-=item (assert-equivalent predicate [pred-name])
+`(assert-equivalent predicate [pred-name])`
 
 This is intended as a tool for building custom assertions.  Returns an
 assertion procedure that compares an expected and an actual value with
@@ -372,22 +372,22 @@ the given predicate and produces a reasonable failure message.
 `assert-equivalent` as, for example, `(define assert-equal
 (assert-equivalent equal? "equal?"))`.
 
-=item assert-< assert-> assert-<= assert->=
+`assert-< assert-> assert-<= assert->=`
 
 Like assert-=, but with a different comparator.  In particular, these
 aren't equivalence relations, so the order of arguments matters.
 
-=item (assert-matches pattern object [message])
+`(assert-matches pattern object [message])`
 
 Passes iff the given object matches the given pattern, per
 `generic-match`.
 
-=item (assert-no-match pattern object [message])
+`(assert-no-match pattern object [message])`
 
 Passes iff the given object does not match the given pattern, likewise
 per `generic-match`.
 
-=item (assert-in-delta expected actual delta [message])
+`(assert-in-delta expected actual delta [message])`
 
 Passes iff the given `actual` value differs, in absolute value, from
 the given `expected` value by no more than `delta`.  Use this in
