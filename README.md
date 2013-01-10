@@ -87,9 +87,8 @@ At any point in the definition of a test suite, there is an implicit
 default, the current test group is the top-level test group, which is
 the root of the test group hierarchy.
 
-<dl>
-<dt>`(define-test (name) expression ... )`</dt>
-<dd>
+`(define-test (name) expression ... )`
+
 Define a test named `name` that consists of the given expressions,
 and add it to the current test group.  When the test is run, the
 expressions will be executed in order, just like the body of any
@@ -106,9 +105,8 @@ This is the most verbose and most expressive test definition syntax.
 The four test definition syntaxes provided below are increasingly
 terse syntactic sugar for common usage patterns of this syntax.
 
-</dd>
-<dt>`(define-test () expression ... )`</dt>
-</dl>
+`(define-test () expression ... )`
+
 Define an explicitly anonymous test.  I can't see why you would want
 to do this, but it is provided for completeness.
 
