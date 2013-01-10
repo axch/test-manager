@@ -231,12 +231,16 @@ true value.  Specifically, the failure report includes the expression
 itself, as well as the values that all subexpressions (except the
 first) of that expression evaluated to.  For example,
 
+``` scheme
  (check (< (+ 2 5) (* 3 2)))
+```
 
 fails and reports
 
+```
  Form      : (< (+ 2 5) (* 3 2))
  Arg values: (7 6)
+```
 
 so you can see right away both what failed, and, to some degree, what
 the problem was.
@@ -342,14 +346,14 @@ other assertions are defined.
 
 `(assert-true thing [message])`
 
-Passes iff the given value is a true value (to wit, not #f).
+Passes iff the given value is a true value (to wit, not `#f`).
 
 `(assert-false thing [message])`
 
-Passes iff the given value is a false value (to wit, #f).
+Passes iff the given value is a false value (to wit, `#f`).
 
 `(assert-equal expected actual [message])`
- Likewise assert-eqv, assert-eq, and assert-=
+ Likewise `assert-eqv`, `assert-eq`, and `assert-=`
 
 Passes iff the given `actual` value is equivalent, according to the
 corresponding predicate, to the `expected` value.  Produces a
@@ -361,7 +365,7 @@ inexact numbers like floating points.
 
 `assert-equals, assert=`
 
-Are aliases for assert-equal and assert-=, respectively.
+Are aliases for `assert-equal` and `assert-=`, respectively.
 
 `(assert-equivalent predicate [pred-name])`
 
@@ -372,9 +376,9 @@ the given predicate and produces a reasonable failure message.
 `assert-equivalent` as, for example, `(define assert-equal
 (assert-equivalent equal? "equal?"))`.
 
-`assert-< assert-> assert-<= assert->=`
+`assert-<`, `assert->`, `assert-<=`, and `assert->=`
 
-Like assert-=, but with a different comparator.  In particular, these
+Like `assert-=`, but with a different comparator.  In particular, these
 aren't equivalence relations, so the order of arguments matters.
 
 `(assert-matches pattern object [message])`
