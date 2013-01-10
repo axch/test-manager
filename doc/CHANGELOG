@@ -1,3 +1,8 @@
+From 1.2:
+- Moved from svn to github.
+- Updated documentation.
+- Rearranged internal structure to be more like what I do nowadays.
+
 From 1.1 to 1.2:
 - Official support for Guile dropped.  Most everything should still
   work.  I don't know how hard the rest is to port.
