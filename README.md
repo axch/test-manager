@@ -206,6 +206,13 @@ Runs all tests registered so far, and prints a report of the results.
 Returns the number of tests that did not pass.  This could have been
 defined as `(run-test '())`.
 
+`(run-tests-and-exit)`
+
+Runs tests as with `run-registered-tests` and *exits Scheme*.  The
+exit status is the number of tests that did not pass.  This is
+intended as an entry point for commandline test suite execution, as
+from a shell script or a Makefile.
+
 `(clear-registered-tests!)`
 
 Unregister all tests.  Useful when loading and reloading test suites
