@@ -109,3 +109,13 @@
 
 (define (run-registered-tests . opt-test-runner)
   (apply run-test (cons '() opt-test-runner)))
+
+(cond-expand
+ (guile
+  'TODO)
+ (else
+  (define (run-tests-and-exit)
+    (let ((v (show-time run-registered-tests)))
+      (newline)
+      (flush-output)
+      (%exit v)))))
