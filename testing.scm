@@ -58,6 +58,9 @@
   (syntax-rules ()
     ((define-each-check form ...)
      (begin (define-test () (check form)) ...))))
+
+(define (clear-registered-tests!)
+  (tg:clear! (current-test-group)))
 
 ;;;; Test Running
 
@@ -106,6 +109,3 @@
 
 (define (run-registered-tests . opt-test-runner)
   (apply run-test (cons '() opt-test-runner)))
-
-(define (clear-registered-tests!)
-  (tg:clear! (current-test-group)))
