@@ -34,7 +34,6 @@
       structure
       #f))
 
-;; TODO Teach Emacs to syntax-highlight this just like define
 (define-syntax define-test
   (syntax-rules ()
     ((define-test (name formal ...) body-exp1 body-exp2 ...)
