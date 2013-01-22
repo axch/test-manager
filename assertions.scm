@@ -17,6 +17,10 @@
 ;;; along with Test Manager.  If not, see <http://www.gnu.org/licenses/>.
 ;;; ----------------------------------------------------------------------
 
+; When compiling for MIT Scheme
+; (declare (usual-integrations force promise?))
+; to interoperate with sensible implementations of iterative forcing.
+
 (define (ensure-forced object)
   (if (promise? object)
       (force object)
