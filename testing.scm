@@ -39,7 +39,7 @@
     ((define-test (name formal ...) body-exp1 body-exp2 ...)
      (let ((proc (lambda (formal ...) body-exp1 body-exp2 ...)))
        (register-test
-	(make-single-test 'name proc (detect-docstring (quote body-exp1))))))
+	(make-single-test `name proc (detect-docstring (quote body-exp1))))))
     ((define-test () body-exp1 body-exp2 ...)
      (let ((proc (lambda () body-exp1 body-exp2 ...)))
        (register-test

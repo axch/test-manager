@@ -112,7 +112,7 @@ tg:in-group-context."
 (define-syntax in-test-group
   (syntax-rules ()
     ((_ name body-exp ...)
-     (let ((group (tg:find-or-make-subgroup *current-test-group* 'name)))
+     (let ((group (tg:find-or-make-subgroup *current-test-group* `name)))
        (fluid-let ((*current-test-group* group))
 	 body-exp ...)
        group))))
