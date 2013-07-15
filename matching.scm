@@ -38,9 +38,10 @@
     (re-string-search-forward pattern object))
 
   (define-method generic-match ((pattern <vector>) (object <vector>))
-    (reduce boolean/and #t (map generic-match
-				(vector->list pattern)
-				(vector->list object))))
+    (and (= (vector-length pattern) (vector-length object))
+         (reduce boolean/and #t (map generic-match
+                                     (vector->list pattern)
+                                     (vector->list object)))))
 
   (define-method generic-match ((pattern <pair>) (object <pair>))
     (and (generic-match (car pattern) (car object))
