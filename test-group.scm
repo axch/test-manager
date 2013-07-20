@@ -51,11 +51,18 @@
    (lambda () 'done)
    (make-ordered-map)))
 
+(define (test-name thing)
+  (cond ((test-group? thing)
+         (tg:name thing))
+        ((single-test? thing)
+         (st:name thing))
+        (else (error "Doesn't look like a test" thing))))
+
 (define (tg:size group)
   (omap:count (tg:test-map group)))
 
 (define (tg:register-test! group test)
-  (omap:put! (tg:test-map group) (st:name test) test))
+  (omap:put! (tg:test-map group) (test-name test) test))
 
 (define (tg:clear! group)
   (omap:clear! (tg:test-map group)))
