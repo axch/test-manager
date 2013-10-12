@@ -28,13 +28,13 @@
 	;; Guile's load appears to magically do the right thing...
 	(load (string-concatenate (list filename ".scm"))))))
  (else ;; The MIT Scheme that knows it is 'mit' isn't in Debian Stable yet
-  (define (load-relative filename)
+  (define (load-relative filename #!optional environment)
     (let ((place (ignore-errors current-load-pathname)))
       (if (pathname? place)
           (with-working-directory-pathname
            (directory-namestring (current-load-pathname))
-           (lambda () (load filename)))
-          (load filename))))))
+           (lambda () (load filename environment)))
+          (load filename environment))))))
 
 (load-relative "portability")
 (load-relative "ordered-map")
