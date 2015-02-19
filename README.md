@@ -3,7 +3,7 @@ Name
 
 test-manager/ - A unit test framework for MIT Scheme in the jUnit style.
 
-Synopsys
+Synopsis
 ========
 
 ```scheme
