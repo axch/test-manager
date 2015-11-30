@@ -106,6 +106,10 @@
 		     #t)))))))
  (else
   (define (->significant-figures places number)
-    (string->number
-     (fluid-let ((flonum-unparser-cutoff `(relative ,places normal)))
-       (number->string number))))))
+    (if (lexical-unbound? system-global-environment 'let-fluids)
+        (string->number
+         (fluid-let ((flonum-unparser-cutoff `(relative ,places normal)))
+           (number->string number)))
+        (string->number
+         (let-fluids flonum-unparser-cutoff `(relative ,places normal)
+           (lambda () (number->string number))))))))

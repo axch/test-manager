@@ -48,6 +48,11 @@
 ;;; Hence the ugliness below.
 ;;; TODO Port this crap to Guile
 (define (capture-unhandled-errors thunk)
+  (if (lexical-unbound? system-global-environment 'let-fluids)
+      (capture-unhandled-errors-pre-let-fluids thunk)
+      (capture-unhandled-errors-post-let-fluids thunk)))
+
+(define (capture-unhandled-errors-pre-let-fluids thunk)
   (if standard-error-hook
       ;; Fix this for the test-within-a-test case.
       (warn "If the standard error hook is already bound, I can't be sure which errors are unhandled."))
@@ -55,3 +60,12 @@
    (lambda (k)
      (fluid-let ((standard-error-hook k))
        (thunk)))))
+
+(define (capture-unhandled-errors-post-let-fluids thunk)
+  (if (fluid standard-error-hook)
+      ;; Fix this for the test-within-a-test case.
+      (warn "If the standard error hook is already bound, I can't be sure which errors are unhandled."))
+  (call-with-current-continuation
+   (lambda (k)
+     (let-fluids standard-error-hook k
+       thunk))))
